@@ -1,6 +1,6 @@
 import { Client } from 'tmi.js'
 
-import { chatbotQueue } from '../services/chatbot.js'
+import { chatbotQueue, actions } from '../services/chatbot.js'
 import { loggerQueue } from '../services/logger.js'
 
 const { CHANNEL_NAME, USERNAME, PASSWORD } = process.env
@@ -32,7 +32,7 @@ chatClient.on('message', (channel, tags, message, self) => {
   loggerQueue.add({ $message })
 
   if (self || !message.startsWith('!')) return
-  const payload = { channel, tags, message, self }
+  const payload = { action: actions.CHAT_COMMAND, channel, tags, message, self }
   chatbotQueue.add(payload, { attempts: 3 })
 })
 

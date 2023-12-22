@@ -75,3 +75,18 @@ clientTWI.on('connected', (address, port) => {
 function messageInterval() {
   clientTWI.say(' Here is the message')
 }
+
+//
+const key = args.shift().toLowerCase()
+const value = args.join(' ')
+
+const { username } = tags
+
+switch (key) {
+  case actions.GAME:
+    break
+  case actions.FOLLOWAGE:
+    break
+  default:
+    break
+}

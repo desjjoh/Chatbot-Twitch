@@ -1,38 +1,35 @@
 import Bull from 'bull'
 
+import { chatCommand, sendChat } from './commands.js'
+
 const chatbotQueue = new Bull('chatbot-queue', {
   redis: { host: '127.0.0.1', port: 6379 },
   limit: { max: 1 }
 })
 
 const actions = {
-  GAME: 'game',
-  FOLLOWAGE: 'followage'
+  CHAT_COMMAND: 'chat_command',
+  SEND_CHAT: 'send_chat'
 }
 
 chatbotQueue.process(async (payload, done) => {
   try {
-    const { channel, tags, message, self } = payload.data
-    const args = message.slice(1).split(' ')
+    const { action } = payload.data
 
-    const key = args.shift().toLowerCase()
-    const value = args.join(' ')
-
-    const { username } = tags
-
-    switch (key) {
-      case actions.GAME:
+    switch (action) {
+      case actions.CHAT_COMMAND:
+        await chatCommand(payload)
         break
-      case actions.FOLLOWAGE:
-        
+      case actions.SEND_CHAT:
+        await sendChat(payload)
         break
       default:
-        break
     }
+
     done()
   } catch (err) {
     done(err)
   }
 })
 
-export { chatbotQueue }
+export { chatbotQueue, actions }
