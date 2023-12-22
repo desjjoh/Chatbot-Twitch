@@ -1,6 +1,6 @@
 import Bull from 'bull'
 
-import { chatCommand, sendChat } from './commands.js'
+import { chatCommand, sendChat } from '../utils/commands.js'
 
 const chatbotQueue = new Bull('chatbot-queue', {
   redis: { host: '127.0.0.1', port: 6379 },
