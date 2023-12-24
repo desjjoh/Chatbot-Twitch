@@ -1,46 +1,27 @@
 import { loggerQueue } from '../services/logger.js'
-
-import { apiClient } from '../plugins/twurple.js'
 import { sendChat } from '../plugins/tmi.js'
-
-const commands = {
-  GAME: 'game'
-}
-
-async function $game(payload) {
-  const { tags } = payload
-  const { username } = tags
-
-  const { CHANNEL_NAME } = process.env
-
-  const data = { channel: CHANNEL_NAME, message: undefined }
-  const stream = await apiClient.streams.getStreamByUserName(CHANNEL_NAME)
-
-  if (!stream?.gameName) {
-    sendChat({
-      ...data,
-      message: `Sorry @${username}. Your !game request could not be completed`
-    })
-    return
-  }
-
-  sendChat({ ...data, message: '' })
-}
+import { commands } from './commands.constants.js'
 
 async function chatCommand(payload) {
   const { message, channel, tags } = payload
+  const { username } = tags
 
-  const args = message.slice(1).split(' ')
-  const key = args.shift().toLowerCase()
+  const regExpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/)
+  const [raw, command, argument] = message.match(regExpCommand)
+  const data = { ...payload, $command: [raw, command, argument] }
 
-  const $message = `info: [${channel}] <${tags.username}>: ${message}`
+  const $message = `info: [${channel}] <${username}>: ${message}`
   loggerQueue.add({ $message })
 
-  switch (key) {
-    case commands.GAME:
-      $game(payload)
+  switch (command) {
+    case commands.GAME.command:
+      await commands.GAME.event(data)
       break
     default:
+      sendChat(
+        channel,
+        `Sorry @${username}. Your !${command} request could not be completed. Reason: !${command} is not initialized.`
+      )
   }
 }
 
