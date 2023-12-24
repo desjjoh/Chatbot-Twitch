@@ -14,7 +14,7 @@ const commands = {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. Hi I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in 2023. 
+      message: `@${username} has requested !${command}. Hi I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
       My source code can be found @ ${GITHUB}.`
     })
   },
