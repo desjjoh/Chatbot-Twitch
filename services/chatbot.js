@@ -4,7 +4,6 @@ import { sendChat } from '../plugins/tmi.js'
 import { chatCommand } from '../utils/commands.js'
 import { loggerQueue } from './logger.js'
 
-
 const chatbotQueue = new Bull('chatbot-queue', {
   redis: { host: '127.0.0.1', port: 6379 },
   limit: { max: 1 }
@@ -14,6 +13,8 @@ const actions = {
   CHAT_COMMAND: 'chat_command',
   SEND_CHAT: 'send_chat'
 }
+
+chatbotQueue.empty()
 
 chatbotQueue.on('completed', function (job) {
   const $message = `info: [QUEUE] <ChatBot> Job with id ${job.id} has been completed`
@@ -36,6 +37,7 @@ chatbotQueue.process(async (payload, done) => {
 
     done()
   } catch (err) {
+    console.log(err)
     done(err)
   }
 })

@@ -16,25 +16,29 @@ function readFile(srcPath) {
 }
 
 function logger(payload) {
-  const MOMENT = moment().format('HH:mm')
   const dateString = new Date(Date.now()).toDateString()
   const srcPath = path.join(process.cwd(), `./logs/${dateString}.txt`)
 
   let logs = readFile(srcPath)
 
   if (!logs) logs = `LOG START -- ${dateString}`
-  logs += `\n[${MOMENT}] ${payload}`
+  logs += `\n${payload}`
 
   fs.writeFile(srcPath, logs, (res, err) => {
-    if (err)
-      console.log(`[${MOMENT}] error: Could not write to file ${srcPath}..`)
+    if (err) console.log(err)
   })
 }
 
 loggerQueue.process((payload, done) => {
   try {
     const { $message } = payload.data
-    logger($message)
+
+    const MOMENT = moment().format('HH:mm')
+    const message = `[${MOMENT}] ${$message}`
+
+    console.log(message)
+    logger(message)
+
     done()
   } catch (err) {
     done(err)

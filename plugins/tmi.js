@@ -1,12 +1,19 @@
 import { Client } from 'tmi.js'
 
+import moment from 'moment'
+
 import { chatbotQueue, actions } from '../services/chatbot.js'
 import { loggerQueue } from '../services/logger.js'
+import { mins2ms } from '../utils/formatter.js'
 
 // TMI CHAT CLIENT CONFIG
 const { CHANNEL_NAME, USERNAME, PASSWORD } = process.env
 const CONFIG = {
-  options: { debug: true, reconnect: true, secure: true },
+  options: {
+    // debug: true,
+    reconnect: true,
+    secure: true
+  },
   identity: {
     username: USERNAME,
     password: PASSWORD
@@ -20,10 +27,12 @@ const client = new Client(CONFIG)
 async function sendChat(payload) {
   const { channel, message } = payload
 
+  const now = moment().format('HH:mm')
+
   const $message = `info: [${channel}] <${USERNAME}>: ${message}`
   loggerQueue.add({ $message })
 
-  await client.say(channel, message)
+  await client.say(channel, `[${now}] ${message}`)
 }
 
 // ON CLIENT CONNECTING EVENT LISTENER
@@ -48,6 +57,7 @@ client.on('connected', (address, port) => {
 client.on('join', (channel, username) => {
   if (username !== client.getUsername()) return
 
+  const { JOIN_MSG, SOCIALS_MSG } = process.env
   const $message = `info: Joined ${channel}`
   loggerQueue.add({ $message })
 
@@ -56,10 +66,17 @@ client.on('join', (channel, username) => {
     channel
   }
 
-  chatbotQueue.add({ ...payload, message: 'This is a test message!' })
+  // BOT JOIN MESSAGE
+  chatbotQueue.add({ ...payload, message: JOIN_MSG })
+
+  // REPEATED MESSAGES
   chatbotQueue.add(
-    { ...payload, message: 'This is a test message!' },
-    { repeat: { cron: '*/15 * * * *' } }
+    { ...payload, message: SOCIALS_MSG },
+    { delay: mins2ms(0.25) }
+  )
+  chatbotQueue.add(
+    { ...payload, message: SOCIALS_MSG },
+    { repeat: { every: mins2ms(15) } }
   )
 })
 

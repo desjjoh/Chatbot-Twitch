@@ -7,6 +7,22 @@ const commands = {
   GAME: 'game'
 }
 
+async function $game(payload) {
+  const { CHANNEL_NAME } = process.env
+
+  const data = {}
+  const stream = await apiClient.streams.getStreamByUserName(CHANNEL_NAME)
+
+  if (!stream?.gameName) {
+    data = { channel: CHANNEL_NAME, message: '' }
+    sendChat(data)
+    return
+  }
+
+  data = { channel: CHANNEL_NAME, message: '' }
+  sendChat(data)
+}
+
 async function chatCommand(payload) {
   const { message } = payload
 
@@ -22,16 +38,6 @@ async function chatCommand(payload) {
       break
     default:
   }
-}
-
-async function $game(payload) {
-  const { CHANNEL_NAME } = process.env
-  const stream = await apiClient.streams.getStreamByUserName(CHANNEL_NAME)
-
-  if (!stream?.gameName) return
-
-  const data = { channel: CHANNEL_NAME, message }
-  sendChat(data)
 }
 
 export { chatCommand }
