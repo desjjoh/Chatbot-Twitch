@@ -2,10 +2,11 @@ import { Client } from 'tmi.js'
 
 import moment from 'moment'
 
-import { chatbot, actions } from '../services/chatbot.js'
-import { logger } from '../services/logger.js'
+import { chatbot, actions } from '../queues/chatbot.js'
+import { logger } from '../queues/logger.js'
 import { mins2ms } from '../utils/formatter.js'
 
+//#region Config
 const { CHANNEL_NAME, USERNAME, PASSWORD } = process.env
 const CONFIG = {
   options: {
@@ -20,7 +21,9 @@ const CONFIG = {
 }
 
 const client = new Client(CONFIG)
+//#endregion
 
+//#region Functions
 async function sendChat(payload) {
   const { channel, message } = payload
   const now = moment().format('HH:mm')
@@ -30,7 +33,9 @@ async function sendChat(payload) {
   const $message = `info: [${channel}] <${USERNAME}>: ${message}`
   logger.add({ $message })
 }
+//#endregion
 
+//#region Event Listeners
 client.on('connecting', (address, port) => {
   const $message = `info: Connecting to ${address} on port ${port}..`
   logger.add({ $message })
@@ -61,9 +66,10 @@ client.on('join', (channel, username) => {
   chatbot.add({ ...payload, message: JOIN_MSG })
   chatbot.add({ ...payload, message: SOCIALS_MSG }, { delay: mins2ms(0.25) })
 
+  // { repeat: { every: mins2ms(15) } }
   chatbot.add(
     { ...payload, message: SOCIALS_MSG },
-    { repeat: { every: mins2ms(15) } }
+    { repeat: { cron: '*/15 * * * *' } }
   )
 })
 
@@ -87,5 +93,6 @@ client.on('message', (channel, tags, message, self) => {
   const payload = { action: actions.CHAT_COMMAND, channel, tags, message, self }
   chatbot.add(payload, { attempts: 3 })
 })
+//#endregion
 
 export { client, sendChat }

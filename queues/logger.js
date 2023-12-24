@@ -24,7 +24,7 @@ function $logger(payload) {
   if (!logs) logs = `LOG START -- ${dateString}`
   logs += `\n${payload}`
 
-  fs.writeFile(srcPath, logs, (res, err) => {
+  fs.writeFile(srcPath, logs, (_res, err) => {
     if (err) console.log(err)
   })
 }
