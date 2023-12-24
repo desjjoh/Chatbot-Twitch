@@ -18,7 +18,7 @@ async function chatCommand(payload) {
   if (!event) {
     await sendChat({
       channel: dehash(channel),
-      message: `Sorry @${username}. Your request could not be completed. [Reason]: !${command} is not initialized.`
+      message: `Sorry @${username}. Your request could not be completed. [Reason] Command !${command} has not been initialized.`
     })
     return
   }

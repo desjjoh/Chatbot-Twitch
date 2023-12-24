@@ -26,7 +26,7 @@ const commands = {
     if (!game) {
       await sendChat({
         channel: dehash(channel),
-        message: `Sorry @${username}. Your request could not be completed. [Reason]: Current game could not be found.`
+        message: `Sorry @${username}. Your request could not be completed. [Reason] Current game could not be found.`
       })
       return
     }
