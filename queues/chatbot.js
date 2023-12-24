@@ -35,6 +35,7 @@ chatbot.process(async (payload, done) => {
 
     done()
   } catch (err) {
+    console.log(err)
     done(err)
   }
 })

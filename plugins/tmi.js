@@ -6,16 +6,15 @@ import { chatbot, actions } from '../queues/chatbot.js'
 import { logger } from '../queues/logger.js'
 import { mins2ms } from '../utils/formatter.js'
 
-const { CHANNEL_NAME, USERNAME, PASSWORD, JOIN_MSG, SOCIALS_MSG } = process.env
-
 //#region Config
+const { CHANNEL_NAME, TTV_USERNAME, PASSWORD } = process.env
 const CONFIG = {
   options: {
     reconnect: true,
     secure: true
   },
   identity: {
-    username: USERNAME,
+    username: TTV_USERNAME,
     password: PASSWORD
   },
   channels: [CHANNEL_NAME]
@@ -25,13 +24,13 @@ const client = new Client(CONFIG)
 //#endregion
 
 //#region Functions
-async function sendChat(payload) {
+const sendChat = async (payload) => {
   const { channel, message } = payload
   const now = moment().format('HH:mm')
 
   await client.say(channel, `[${now}] ${message}`)
 
-  const $message = `info: [${channel}] <${USERNAME}>: ${message}`
+  const $message = `info: [${channel}] <${TTV_USERNAME}>: ${message}`
   logger.add({ $message })
 }
 //#endregion
@@ -55,6 +54,7 @@ client.on('connected', (_address, _port) => {
 client.on('join', (channel, username) => {
   if (username !== client.getUsername()) return
 
+  const { JOIN_MSG, SOCIALS_MSG } = process.env
   const $message = `info: Joined ${channel}`
   logger.add({ $message })
 

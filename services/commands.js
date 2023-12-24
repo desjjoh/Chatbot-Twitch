@@ -4,7 +4,7 @@ import { dehash } from '../utils/formatter.js'
 
 import { apiClient } from '../plugins/twurple.js'
 
-const { AUTHOR, USERNAME, GITHUB } = process.env
+const { AUTHOR, TTV_USERNAME, GITHUB } = process.env
 
 const commands = {
   about: async (payload) => {
@@ -14,8 +14,8 @@ const commands = {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
-      My source code can be found @ [${GITHUB}].`
+      message: `@${username} has requested !${command}. I'm ${TTV_USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
+      My source code can be found @ ${GITHUB}`
     })
   },
   commands: async (payload) => {
@@ -50,7 +50,7 @@ const commands = {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. The current game is set to ${game}.`
+      message: `@${username} has requested !${command}. The current game is set to [${game}].`
     })
   }
 }

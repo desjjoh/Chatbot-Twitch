@@ -3,6 +3,9 @@ import { dataSource } from '../plugins/typeorm.js'
 const counterRepository = dataSource.getRepository('Counter')
 
 class DatabaseService {
+  static async initCounter(payload) {
+    return counterRepository.save({ ...payload, value: 0 })
+  }
   static async findCounter(payload) {
     return counterRepository.findOne({ where: { name: payload } })
   }
