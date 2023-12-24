@@ -1,5 +1,5 @@
 import 'dotenv/config'
 
-import { chatClient } from './plugins/tmi.js'
+import { client } from './plugins/tmi.js'
 
-chatClient.connect()
+client.connect()
