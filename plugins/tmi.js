@@ -60,20 +60,18 @@ client.on('join', (channel, username) => {
   const $message = `info: Joined ${channel}`
   logger.add({ $message })
 
-  const payload = {
-    action: actions.SEND_CHAT,
-    channel
-  }
+  // const payload = {
+  //   action: actions.SEND_CHAT,
+  //   channel
+  // }
 
-  // BOT JOIN MESSAGE
-  chatbot.add({ ...payload, message: JOIN_MSG })
+  // chatbot.add({ ...payload, message: JOIN_MSG })
+  // chatbot.add({ ...payload, message: SOCIALS_MSG }, { delay: mins2ms(0.25) })
 
-  // REPEATED MESSAGES
-  chatbot.add({ ...payload, message: SOCIALS_MSG }, { delay: mins2ms(0.25) })
-  chatbot.add(
-    { ...payload, message: SOCIALS_MSG },
-    { repeat: { every: mins2ms(15) } }
-  )
+  // chatbot.add(
+  //   { ...payload, message: SOCIALS_MSG },
+  //   { repeat: { every: mins2ms(15) } }
+  // )
 })
 
 // ON MESSAGE RECIEVED EVENT LISTENER
