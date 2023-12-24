@@ -8,23 +8,27 @@ const commands = {
 }
 
 async function $game(payload) {
+  const { tags } = payload
+  const { username } = tags
+
   const { CHANNEL_NAME } = process.env
 
-  const data = {}
+  const data = { channel: CHANNEL_NAME, message: undefined }
   const stream = await apiClient.streams.getStreamByUserName(CHANNEL_NAME)
 
   if (!stream?.gameName) {
-    data = { channel: CHANNEL_NAME, message: '' }
-    sendChat(data)
+    sendChat({
+      ...data,
+      message: `Sorry @${username}. Your !game request could not be completed`
+    })
     return
   }
 
-  data = { channel: CHANNEL_NAME, message: '' }
-  sendChat(data)
+  sendChat({ ...data, message: '' })
 }
 
 async function chatCommand(payload) {
-  const { message } = payload
+  const { message, channel, tags } = payload
 
   const args = message.slice(1).split(' ')
   const key = args.shift().toLowerCase()
