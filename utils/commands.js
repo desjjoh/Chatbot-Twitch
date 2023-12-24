@@ -1,4 +1,4 @@
-import { loggerQueue } from '../services/logger.js'
+import { logger } from '../services/logger.js'
 import { sendChat } from '../plugins/tmi.js'
 import { commands } from './commands.constants.js'
 
@@ -12,7 +12,7 @@ async function chatCommand(payload) {
   const data = { ...payload, $command: [raw, command, argument] }
 
   const $message = `info: [${channel}] <${username}>: ${message}`
-  loggerQueue.add({ $message })
+  logger.add({ $message })
 
   switch (command) {
     case commands.GAME.command:

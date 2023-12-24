@@ -2,9 +2,9 @@ import Bull from 'bull'
 
 import { sendChat } from '../plugins/tmi.js'
 import { chatCommand } from '../utils/commands.js'
-import { loggerQueue } from './logger.js'
+import { logger } from './logger.js'
 
-const chatbotQueue = new Bull('chatbot-queue', {
+const chatbot = new Bull('chatbot-queue', {
   redis: { host: '127.0.0.1', port: 6379 },
   limit: { max: 1 }
 })
@@ -14,14 +14,14 @@ const actions = {
   SEND_CHAT: 'send_chat'
 }
 
-chatbotQueue.empty()
+chatbot.empty()
 
-chatbotQueue.on('completed', function (job) {
+chatbot.on('completed', function (job) {
   const $message = `info: [QUEUE] <ChatBot> Job with id ${job.id} has been completed`
-  loggerQueue.add({ $message })
+  logger.add({ $message })
 })
 
-chatbotQueue.process(async (payload, done) => {
+chatbot.process(async (payload, done) => {
   try {
     const { action } = payload.data
 
@@ -42,4 +42,4 @@ chatbotQueue.process(async (payload, done) => {
   }
 })
 
-export { chatbotQueue, actions }
+export { chatbot, actions }

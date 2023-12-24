@@ -4,7 +4,7 @@ import path from 'path'
 import moment from 'moment'
 import Bull from 'bull'
 
-const loggerQueue = new Bull('logger-queue', {
+const logger = new Bull('logger-queue', {
   redis: { host: '127.0.0.1', port: 6379 },
   limit: { max: 1 }
 })
@@ -15,7 +15,7 @@ function readFile(srcPath) {
   else return undefined
 }
 
-function logger(payload) {
+function $logger(payload) {
   const dateString = new Date(Date.now()).toDateString()
   const srcPath = path.join(process.cwd(), `./logs/${dateString}.txt`)
 
@@ -29,7 +29,7 @@ function logger(payload) {
   })
 }
 
-loggerQueue.process((payload, done) => {
+logger.process((payload, done) => {
   try {
     const { $message } = payload.data
 
@@ -37,7 +37,7 @@ loggerQueue.process((payload, done) => {
     const message = `[${MOMENT}] ${$message}`
 
     console.log(message)
-    logger(message)
+    $logger(message)
 
     done()
   } catch (err) {
@@ -45,4 +45,4 @@ loggerQueue.process((payload, done) => {
   }
 })
 
-export { loggerQueue }
+export { logger }
