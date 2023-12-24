@@ -10,13 +10,11 @@ const commands = {
 
       const [raw, command, argument] = $command
 
-      const data = { channel: CHANNEL_NAME, message: undefined }
-
       //   const USER = await apiClient.users.getUserByName(channel)
       const STREAM = await apiClient.streams.getStreamByUserName(channel)
       //   const CHANNEL = await apiClient.channels.getChannelInfoById(USER.id)
 
-      sendChat({ ...data, message: '' })
+      await sendChat({ channel: CHANNEL_NAME, message: undefined })
     }
   }
 }

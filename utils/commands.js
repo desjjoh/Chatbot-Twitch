@@ -19,7 +19,7 @@ async function chatCommand(payload) {
       await commands.GAME.event(data)
       break
     default:
-      sendChat(
+      await sendChat(
         channel,
         `Sorry @${username}. Your !${command} request could not be completed. Reason: !${command} is not initialized.`
       )
