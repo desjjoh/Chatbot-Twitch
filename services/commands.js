@@ -1,6 +1,6 @@
 import { logger } from '../queues/logger.js'
 import { sendChat } from '../plugins/tmi.js'
-import { dehash } from './formatter.js'
+import { dehash } from '../utils/formatter.js'
 
 import { apiClient } from '../plugins/twurple.js'
 
@@ -21,6 +21,7 @@ const commands = {
   commands: async (payload) => {
     const { tags, channel, $command } = payload
     const [_raw, command, _argument] = $command
+    const { username } = tags
 
     const LIST = Object.keys(commands)
       .map((key) => `!${key}`)
