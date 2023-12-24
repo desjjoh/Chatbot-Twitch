@@ -8,6 +8,7 @@ async function chatCommand(payload) {
 
   const regExpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/)
   const [raw, command, argument] = message.match(regExpCommand)
+
   const data = { ...payload, $command: [raw, command, argument] }
 
   const $message = `info: [${channel}] <${username}>: ${message}`
