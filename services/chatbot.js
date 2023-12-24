@@ -15,7 +15,6 @@ const actions = {
 }
 
 chatbot.empty()
-
 chatbot.on('completed', function (job) {
   const $message = `info: [QUEUE] <ChatBot> Job with id ${job.id} has been completed`
   logger.add({ $message })
@@ -37,7 +36,6 @@ chatbot.process(async (payload, done) => {
 
     done()
   } catch (err) {
-    console.log(err)
     done(err)
   }
 })

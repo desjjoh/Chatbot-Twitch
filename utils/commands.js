@@ -1,6 +1,6 @@
 import { logger } from '../services/logger.js'
 import { sendChat } from '../plugins/tmi.js'
-import { commands } from './commands.constants.js'
+import { commands } from '../config/commands.constants.js'
 import { dehash } from './formatter.js'
 
 async function chatCommand(payload) {
