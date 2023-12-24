@@ -1,12 +1,11 @@
 import { logger } from '../services/logger.js'
 import { sendChat } from '../plugins/tmi.js'
 import { commands } from './commands.constants.js'
+import { dehash } from './formatter.js'
 
 async function chatCommand(payload) {
-  const { message, tags } = payload
+  const { message, tags, channel } = payload
   const { username } = tags
-
-  const { CHANNEL_NAME } = process.env
 
   const regExpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/)
   const [raw, command, argument] = message.match(regExpCommand)
@@ -18,8 +17,8 @@ async function chatCommand(payload) {
 
   if (!event) {
     await sendChat({
-      channel: CHANNEL_NAME,
-      message: `Sorry @${username}. Your request could not be completed. Reason: !${command} is not initialized.`
+      channel: dehash(channel),
+      message: `Sorry @${username}. Your request could not be completed. [Reason]: !${command} is not initialized.`
     })
     return
   }
