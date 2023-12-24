@@ -55,7 +55,6 @@ client.on('connected', (_address, _port) => {
 client.on('join', (channel, username) => {
   if (username !== client.getUsername()) return
 
-  const { JOIN_MSG, SOCIALS_MSG } = process.env
   const $message = `info: Joined ${channel}`
   logger.add({ $message })
 
