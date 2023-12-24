@@ -6,11 +6,9 @@ import { chatbot, actions } from '../services/chatbot.js'
 import { logger } from '../services/logger.js'
 import { mins2ms } from '../utils/formatter.js'
 
-// TMI CHAT CLIENT CONFIG
 const { CHANNEL_NAME, USERNAME, PASSWORD } = process.env
 const CONFIG = {
   options: {
-    // debug: true,
     reconnect: true,
     secure: true
   },
@@ -23,7 +21,6 @@ const CONFIG = {
 
 const client = new Client(CONFIG)
 
-// FUNCTION USED TO SEND CHAT MESSAGE
 async function sendChat(payload) {
   const { channel, message } = payload
   const now = moment().format('HH:mm')
@@ -34,25 +31,21 @@ async function sendChat(payload) {
   logger.add({ $message })
 }
 
-// ON CLIENT CONNECTING EVENT LISTENER
 client.on('connecting', (address, port) => {
   const $message = `info: Connecting to ${address} on port ${port}..`
   logger.add({ $message })
 })
 
-// ON CLIENT AUTHENTICATION EVENT LISTENER
 client.on('logon', () => {
   const $message = 'info: Sending authentication to server..'
   logger.add({ $message })
 })
 
-// ON CLIENT CONNECTED EVENT LISTENER
-client.on('connected', (address, port) => {
+client.on('connected', (_address, _port) => {
   const $message = 'info: Connected to server.'
   logger.add({ $message })
 })
 
-// ON CHANNEL JOIN EVENT LISTENER
 client.on('join', (channel, username) => {
   if (username !== client.getUsername()) return
 
@@ -74,7 +67,21 @@ client.on('join', (channel, username) => {
   )
 })
 
-// ON MESSAGE RECIEVED EVENT LISTENER
+client.on('disconnected', (reason) => {
+  const $message = `error: Disconnected from server. [Reason]: ${reason}`
+  logger.add({ $message })
+})
+
+client.on('reconnect', () => {
+  const $message = 'info: Reconnected to server.'
+  logger.add({ $message })
+})
+
+client.on('logon', () => {
+  const $message = 'info: Sending authentication to server..'
+  logger.add({ $message })
+})
+
 client.on('message', (channel, tags, message, self) => {
   if (self || !message.startsWith('!')) return
   const payload = { action: actions.CHAT_COMMAND, channel, tags, message, self }
