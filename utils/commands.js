@@ -1,21 +1,34 @@
 import { logger } from '../queues/logger.js'
 import { sendChat } from '../plugins/tmi.js'
-import { commands } from '../config/commands.constants.js'
 import { dehash } from './formatter.js'
 
 import { apiClient } from '../plugins/twurple.js'
+
+const { AUTHOR, USERNAME, GITHUB } = process.env
 
 const commands = {
   about: async (payload) => {
     const { tags, channel, $command } = payload
     const [_raw, command, _argument] = $command
-    const { AUTHOR, USERNAME, GITHUB } = process.env
     const { username } = tags
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. Hi I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
-      My source code can be found @ ${GITHUB}.`
+      message: `@${username} has requested !${command}. I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
+      My source code can be found @ [${GITHUB}].`
+    })
+  },
+  commands: async (payload) => {
+    const { tags, channel, $command } = payload
+    const [_raw, command, _argument] = $command
+
+    const LIST = Object.keys(commands)
+      .map((key) => `!${key}`)
+      .join(' ')
+
+    await sendChat({
+      channel: dehash(channel),
+      message: `@${username} has requested !${command}. Here is a list of all available commands: ${LIST}`
     })
   },
   game: async (payload) => {
@@ -29,7 +42,7 @@ const commands = {
     if (!game) {
       await sendChat({
         channel: dehash(channel),
-        message: `Sorry @${username}. Your request could not be completed. [Reason] Current game could not be found.`
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Current game could not be found.`
       })
       return
     }

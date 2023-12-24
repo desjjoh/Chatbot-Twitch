@@ -6,8 +6,9 @@ import { chatbot, actions } from '../queues/chatbot.js'
 import { logger } from '../queues/logger.js'
 import { mins2ms } from '../utils/formatter.js'
 
+const { CHANNEL_NAME, USERNAME, PASSWORD, JOIN_MSG, SOCIALS_MSG } = process.env
+
 //#region Config
-const { CHANNEL_NAME, USERNAME, PASSWORD } = process.env
 const CONFIG = {
   options: {
     reconnect: true,
