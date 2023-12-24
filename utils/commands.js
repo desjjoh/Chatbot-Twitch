@@ -21,7 +21,7 @@ async function chatCommand(payload) {
     default:
       await sendChat(
         channel,
-        `Sorry @${username}. Your !${command} request could not be completed. Reason: !${command} is not initialized.`
+        `Sorry @${username}. Your request could not be completed. Reason: !${command} is not initialized.`
       )
   }
 }
