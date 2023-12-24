@@ -9,12 +9,13 @@ const commands = {
   about: async (payload) => {
     const { tags, channel, $command } = payload
     const [_raw, command, _argument] = $command
-    const { AUTHOR, USERNAME } = process.env
+    const { AUTHOR, USERNAME, GITHUB } = process.env
     const { username } = tags
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. ${USERNAME} is a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in 2023.`
+      message: `@${username} has requested !${command}. Hi I'm ${USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in 2023. 
+      My source code can be found @ ${GITHUB}.`
     })
   },
   game: async (payload) => {
