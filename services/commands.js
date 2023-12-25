@@ -1,11 +1,11 @@
+import moment from 'moment'
+
 import { logger } from '../queues/logger.js'
 import { sendChat } from '../plugins/tmi.js'
-import { dehash } from '../utils/formatter.js'
-
 import { apiClient } from '../plugins/twurple.js'
+import { dehash, timeConversion } from '../utils/formatter.js'
 
 const { AUTHOR, TTV_USERNAME, GITHUB } = process.env
-
 const commands = {
   about: async (payload) => {
     const { tags, channel, $command } = payload
@@ -14,7 +14,7 @@ const commands = {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. I'm ${TTV_USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user ${AUTHOR} in December of 2023. 
+      message: `@${username} has requested the command !${command}. I'm @${TTV_USERNAME}, a TwitchTV chat bot developed in NodeJS by twitch user @${AUTHOR} in December of 2023. 
       My source code can be found @ ${GITHUB}`
     })
   },
@@ -29,29 +29,89 @@ const commands = {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested !${command}. Here is a list of all available commands: ${LIST}`
+      message: `@${username} has requested the command !${command}. Here is a list of all available commands: ${LIST}`
     })
   },
   game: async (payload) => {
+    const { tags, channel, $command } = payload
+    const [_raw, command, argument] = $command
+    const { username } = tags
+
+    const USER = await apiClient.users.getUserByName(dehash(channel))
+    const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
+
+    const game = CHANNEL?.gameName
+    if (!game)
+      await sendChat({
+        channel: dehash(channel),
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Current game could not be found.`
+      })
+    else
+      await sendChat({
+        channel: dehash(channel),
+        message: `@${username} has requested the command !${command}. The current game is [${game}].`
+      })
+  },
+  tags: async (payload) => {
+    const { tags, channel, $command } = payload
+    const [_raw, command, _argument] = $command
+    const { username } = tags
+
+    const USER = await apiClient.users.getUserByName(dehash(channel))
+    const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
+
+    if (!CHANNEL?.tags)
+      await sendChat({
+        channel: dehash(channel),
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Stream tags could not be found.`
+      })
+    else
+      await sendChat({
+        channel: dehash(channel),
+        message: `@${username} has requested the command !${command}. The stream tags are ${CHANNEL?.tags
+          .map((tag) => `[${tag}]`)
+          .join(', ')}.`
+      })
+  },
+  title: async (payload) => {
+    const { tags, channel, $command } = payload
+    const [_raw, command, _argument] = $command
+    const { username } = tags
+
+    const USER = await apiClient.users.getUserByName(dehash(channel))
+    const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
+
+    if (!CHANNEL?.title)
+      await sendChat({
+        channel: dehash(channel),
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Stream title could not be found.`
+      })
+    else
+      await sendChat({
+        channel: dehash(channel),
+        message: `@${username} has requested the command !${command}. The stream title is ${CHANNEL?.title}`
+      })
+  },
+  uptime: async (payload) => {
     const { tags, channel, $command } = payload
     const [_raw, command, _argument] = $command
     const { username } = tags
 
     const STREAM = await apiClient.streams.getStreamByUserName(dehash(channel))
-    const game = STREAM?.gameName
 
-    if (!game) {
+    if (!STREAM.startDate)
       await sendChat({
         channel: dehash(channel),
-        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Current game could not be found.`
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Stream start date could not be found.`
       })
-      return
+    else {
+      const startDate = moment(STREAM?.startDate).format('llll')
+      const uptime = timeConversion(Date.now() - STREAM?.startDate.getTime())
+      await sendChat({
+        channel: dehash(channel),
+        message: `@${username} has requested the command !${command}. The stream has been live since ${startDate} for a total of ${uptime}`
+      })
     }
-
-    await sendChat({
-      channel: dehash(channel),
-      message: `@${username} has requested !${command}. The current game is set to [${game}].`
-    })
   }
 }
 

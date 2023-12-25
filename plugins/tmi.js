@@ -4,10 +4,10 @@ import moment from 'moment'
 
 import { chatbot, actions } from '../queues/chatbot.js'
 import { logger } from '../queues/logger.js'
-import { mins2ms } from '../utils/formatter.js'
 
 //#region Config
 const { CHANNEL_NAME, TTV_USERNAME, PASSWORD } = process.env
+
 const CONFIG = {
   options: {
     reconnect: true,
@@ -54,7 +54,6 @@ client.on('connected', (_address, _port) => {
 client.on('join', (channel, username) => {
   if (username !== client.getUsername()) return
 
-  const { JOIN_MSG, SOCIALS_MSG } = process.env
   const $message = `info: Joined ${channel}`
   logger.add({ $message })
 
@@ -63,10 +62,10 @@ client.on('join', (channel, username) => {
     channel
   }
 
-  chatbot.add({ ...payload, message: JOIN_MSG })
-  chatbot.add({ ...payload, message: SOCIALS_MSG }, { delay: mins2ms(0.25) })
+  const JOIN_MSG = `Hi I'm @${TTV_USERNAME}! What can I help you with today?`
+  const SOCIALS_MSG = `Hey there! If you're enjoying the stream, please consider following the stream for updates when we go live!`
 
-  // { repeat: { every: mins2ms(15) } }
+  chatbot.add({ ...payload, message: JOIN_MSG })
   chatbot.add(
     { ...payload, message: SOCIALS_MSG },
     { repeat: { cron: '*/15 * * * *' } }
@@ -80,11 +79,6 @@ client.on('disconnected', (reason) => {
 
 client.on('reconnect', () => {
   const $message = 'info: Reconnected to server.'
-  logger.add({ $message })
-})
-
-client.on('logon', () => {
-  const $message = 'info: Sending authentication to server..'
   logger.add({ $message })
 })
 
