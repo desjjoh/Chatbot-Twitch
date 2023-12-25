@@ -44,7 +44,7 @@ async function game(payload) {
               async () => {
                 await sendChat({
                   channel: dehash(channel),
-                  message: `@${username} has requested the command !${command} ${argument}. The stream game has been set to: ${argument}`
+                  message: `@${username} has requested the command !${command} ${argument}. The stream game has been set to [${argument}]`
                 })
               },
               async () => {
