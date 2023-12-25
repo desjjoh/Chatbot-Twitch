@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as fs from 'fs'
 import path from 'path'
 

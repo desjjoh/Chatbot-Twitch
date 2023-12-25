@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { RefreshingAuthProvider } from '@twurple/auth'
 import { ApiClient } from '@twurple/api'
 

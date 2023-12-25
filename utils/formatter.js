@@ -3,7 +3,7 @@ function dehash(string) {
 }
 
 function capitalize(payload) {
-  return payload[0].toUpperCase() + string.slice(1)
+  return payload[0].toUpperCase() + payload.slice(1)
 }
 
 function mins2ms(number) {
@@ -16,8 +16,10 @@ function timeConversion(payload) {
 
   const msInDay = 1000 * 60 * 60 * 24
   const days = Math.trunc(duration / msInDay)
-  portions.push(days + 'd')
-  duration = duration - days * msInDay
+  if (days > 0) {
+    portions.push(days + 'd')
+    duration = duration - days * msInDay
+  }
 
   const msInHour = 1000 * 60 * 60
   const hours = Math.trunc(duration / msInHour)

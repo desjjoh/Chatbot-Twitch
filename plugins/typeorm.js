@@ -1,6 +1,5 @@
 import typeorm from 'typeorm'
-
-import { counter } from '../config/database.entities.js'
+import { counter } from '../models/index.js'
 
 const dataSource = new typeorm.DataSource({
   type: 'sqlite',

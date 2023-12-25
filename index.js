@@ -1,9 +1,9 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
-import { client } from './plugins/tmi.js'
-import { dataSource } from './plugins/typeorm.js'
-import { chatbot } from './queues/chatbot.js'
+import { client } from './plugins/tmi.js';
+import { dataSource } from './plugins/typeorm.js';
+import { chatbot } from './queues/chatbot.js';
 
-await chatbot.empty()
-await dataSource.initialize()
-await client.connect()
+await chatbot.empty();
+await dataSource.initialize();
+await client.connect();

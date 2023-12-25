@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Client } from 'tmi.js'
 
 import moment from 'moment'
@@ -46,7 +47,7 @@ client.on('logon', () => {
   logger.add({ $message })
 })
 
-client.on('connected', (_address, _port) => {
+client.on('connected', () => {
   const $message = 'info: Connected to server.'
   logger.add({ $message })
 })
@@ -62,14 +63,17 @@ client.on('join', (channel, username) => {
     channel
   }
 
-  const JOIN_MSG = `Hi I'm @${TTV_USERNAME}! What can I help you with today?`
-  const SOCIALS_MSG = `Hey there! If you're enjoying the stream, please consider following the stream for updates when we go live!`
-
-  // chatbot.add({ ...payload, message: JOIN_MSG })
-  // chatbot.add(
-  //   { ...payload, message: SOCIALS_MSG },
-  //   { repeat: { cron: '*/15 * * * *' } }
-  // )
+  chatbot.add({
+    ...payload,
+    message: `Hi I'm @${TTV_USERNAME}! What can I help you with today?`
+  })
+  chatbot.add(
+    {
+      ...payload,
+      message: `Hey there! If you're enjoying the stream, please consider following the stream for updates when we go live!`
+    },
+    { repeat: { cron: '*/15 * * * *' } }
+  )
 })
 
 client.on('disconnected', (reason) => {
