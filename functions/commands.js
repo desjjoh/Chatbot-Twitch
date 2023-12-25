@@ -6,7 +6,15 @@ async function commands(payload) {
   const [, command] = $command
   const username = capitalize(tags.username)
 
-  const LIST = Object.keys(commands)
+  const LIST = [
+    'about',
+    'commands',
+    'followage',
+    'game',
+    'tags',
+    'title',
+    'uptime'
+  ]
     .map((key) => `!${key}`)
     .join(' ')
 
