@@ -6,6 +6,7 @@ import { apiClient } from '../plugins/twurple.js'
 import { dehash, timeConversion } from '../utils/formatter.js'
 
 const { AUTHOR, TTV_USERNAME, GITHUB } = process.env
+
 const commands = {
   about: async (payload) => {
     const { tags, channel, $command } = payload
@@ -32,25 +33,89 @@ const commands = {
       message: `@${username} has requested the command !${command}. Here is a list of all available commands: ${LIST}`
     })
   },
+  followage: async (payload) => {
+    const { tags, channel, $command } = payload
+    const [_raw, command, _argument] = $command
+    const { username } = tags
+
+    const USER = await apiClient.users.getUserByName(username)
+    const BROADCASTER = await apiClient.users.getUserByName(dehash(channel))
+
+    const CHANNELFOLLOWER = await BROADCASTER.getChannelFollower(USER.id)
+
+    if (!CHANNELFOLLOWER?.followDate)
+      await sendChat({
+        channel: dehash(channel),
+        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] You do not follow the channel.`
+      })
+    else {
+      const followDate = CHANNELFOLLOWER?.followDate
+      const fDate = moment(followDate).format('llll')
+      const followage = timeConversion(Date.now() - followDate.getTime())
+
+      await sendChat({
+        channel: dehash(channel),
+        message: `@${username} has requested the command !${command}. You have followed the stream since ${fDate} for a total of ${followage}`
+      })
+    }
+  },
   game: async (payload) => {
     const { tags, channel, $command } = payload
     const [_raw, command, argument] = $command
-    const { username } = tags
+    const { username, mod } = tags
 
     const USER = await apiClient.users.getUserByName(dehash(channel))
-    const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
+    const isBroadcaster = Boolean(dehash(channel) == username)
 
-    const game = CHANNEL?.gameName
-    if (!game)
-      await sendChat({
-        channel: dehash(channel),
-        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Current game could not be found.`
-      })
-    else
-      await sendChat({
-        channel: dehash(channel),
-        message: `@${username} has requested the command !${command}. The current game is [${game}].`
-      })
+    switch (argument) {
+      case undefined:
+        const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
+        const game = CHANNEL?.gameName
+
+        if (!game)
+          await sendChat({
+            channel: dehash(channel),
+            message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Current game could not be found.`
+          })
+        else
+          await sendChat({
+            channel: dehash(channel),
+            message: `@${username} has requested the command !${command}. The current game is [${game}].`
+          })
+        break
+      default:
+        if (mod || isBroadcaster) {
+          const GAME = await apiClient.games.getGameByName(argument.trim())
+          if (!GAME?.name)
+            await sendChat({
+              channel: dehash(channel),
+              message: `Sorry @${username}. Your request !${command} ${argument.trim()} could not be completed. [Reason] Game [${argument.trim()}] could not be found.`
+            })
+          else
+            await apiClient.channels
+              .updateChannelInfo(USER.id, {
+                gameId: GAME.id
+              })
+              .then(
+                async (_res) => {
+                  await sendChat({
+                    channel: dehash(channel),
+                    message: `@${username} has requested the command !${command} ${argument.trim()}. The stream game has been set to: ${argument.trim()}`
+                  })
+                },
+                async (_err) => {
+                  await sendChat({
+                    channel: dehash(channel),
+                    message: `Sorry @${username}. Your request !${command} ${argument.trim()} could not be completed. [Reason] Update channel info action could not be completed.`
+                  })
+                }
+              )
+        } else
+          await sendChat({
+            channel: dehash(channel),
+            message: `Sorry @${username}. Your request !${command} ${argument} could not be completed. [Reason] You do not have permission to complete this action.`
+          })
+    }
   },
   tags: async (payload) => {
     const { tags, channel, $command } = payload
@@ -75,22 +140,54 @@ const commands = {
   },
   title: async (payload) => {
     const { tags, channel, $command } = payload
-    const [_raw, command, _argument] = $command
-    const { username } = tags
+    const [_raw, command, argument] = $command
+    const { username, mod } = tags
 
     const USER = await apiClient.users.getUserByName(dehash(channel))
     const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
 
-    if (!CHANNEL?.title)
-      await sendChat({
-        channel: dehash(channel),
-        message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Stream title could not be found.`
-      })
-    else
-      await sendChat({
-        channel: dehash(channel),
-        message: `@${username} has requested the command !${command}. The stream title is ${CHANNEL?.title}`
-      })
+    const isBroadcaster = Boolean(dehash(channel) == username)
+
+    switch (argument) {
+      case undefined:
+        if (!CHANNEL?.title)
+          await sendChat({
+            channel: dehash(channel),
+            message: `Sorry @${username}. Your !${command} request could not be completed. [Reason] Stream title could not be found.`
+          })
+        else
+          await sendChat({
+            channel: dehash(channel),
+            message: `@${username} has requested the command !${command}. The stream title is: ${CHANNEL?.title}`
+          })
+        break
+      default:
+        if (mod || isBroadcaster)
+          await apiClient.channels
+            .updateChannelInfo(USER.id, {
+              title: argument.trim()
+            })
+            .then(
+              async (_res) => {
+                await sendChat({
+                  channel: dehash(channel),
+                  message: `@${username} has requested the command !${command} ${argument.trim()}. The stream title has been set to: ${argument.trim()}`
+                })
+              },
+              async (_err) => {
+                await sendChat({
+                  channel: dehash(channel),
+                  message: `Sorry @${username}. Your request !${command} ${argument.trim()} could not be completed. [Reason] Update channel info action could not be completed.`
+                })
+              }
+            )
+        else {
+          await sendChat({
+            channel: dehash(channel),
+            message: `Sorry @${username}. Your request !${command} ${argument} could not be completed. [Reason] You do not have permission to complete this action.`
+          })
+        }
+    }
   },
   uptime: async (payload) => {
     const { tags, channel, $command } = payload
@@ -119,7 +216,7 @@ async function chatCommand(payload) {
   const { message, tags, channel } = payload
   const { username } = tags
 
-  const regExpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/)
+  const regExpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\S+)?(.*)?/)
   const [raw, command, argument] = message.match(regExpCommand)
 
   const $message = `info: [${channel}] <${username}>: ${message}`
@@ -127,16 +224,12 @@ async function chatCommand(payload) {
 
   const event = commands[command]
 
-  if (!event) {
+  if (!event)
     await sendChat({
       channel: dehash(channel),
       message: `Sorry @${username}. Your request could not be completed. [Reason] Command !${command} has not been initialized.`
     })
-    return
-  }
-
-  const data = { ...payload, $command: [raw, command, argument] }
-  await event(data)
+  else await event({ ...payload, $command: [raw, command, argument] })
 }
 
 export { chatCommand, commands }
