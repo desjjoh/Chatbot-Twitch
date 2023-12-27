@@ -21,7 +21,7 @@ async function uptime(payload) {
     const uptime = timeConversion(Date.now() - STREAM?.startDate.getTime())
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested the command !${command}. The stream has been live since ${startDate} for a total of ${uptime}`
+      message: `@${username}. The stream has been live since ${startDate} for a total of ${uptime}`
     })
   }
 }

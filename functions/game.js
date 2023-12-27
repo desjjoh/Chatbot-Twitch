@@ -9,7 +9,7 @@ async function game(payload) {
   const username = capitalize(tags.username)
 
   const USER = await apiClient.users.getUserByName(dehash(channel))
-  const isBroadcaster = Boolean(dehash(channel) == username)
+  const isBroadcaster = capitalize(dehash(channel)) == username
 
   const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
   const game = CHANNEL?.gameName
@@ -24,7 +24,7 @@ async function game(payload) {
       else
         await sendChat({
           channel: dehash(channel),
-          message: `@${username} has requested the command !${command}. The current game is [${game}].`
+          message: `@${username}. The current game is [${game}].`
         })
       break
     default:
@@ -44,7 +44,7 @@ async function game(payload) {
               async () => {
                 await sendChat({
                   channel: dehash(channel),
-                  message: `@${username} has requested the command !${command} ${argument}. The stream game has been set to [${argument}]`
+                  message: `@${username}. The stream game has been set to [${argument}]`
                 })
               },
               async () => {

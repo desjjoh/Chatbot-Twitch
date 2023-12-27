@@ -12,7 +12,7 @@ async function title(payload) {
   const USER = await apiClient.users.getUserByName(dehash(channel))
   const CHANNEL = await apiClient.channels.getChannelInfoById(USER?.id)
 
-  const isBroadcaster = Boolean(dehash(channel) == username)
+  const isBroadcaster = capitalize(dehash(channel)) == username
 
   switch (argument) {
     case undefined:
@@ -24,7 +24,7 @@ async function title(payload) {
       else
         await sendChat({
           channel: dehash(channel),
-          message: `@${username} has requested the command !${command}. The stream title is: ${CHANNEL?.title}`
+          message: `@${username}. The stream title is: ${CHANNEL?.title}`
         })
       break
     default:
@@ -37,7 +37,7 @@ async function title(payload) {
             async () => {
               await sendChat({
                 channel: dehash(channel),
-                message: `@${username} has requested the command !${command} ${argument}. The stream title has been set to: ${argument}`
+                message: `@${username}. The stream title has been set to: ${argument}`
               })
             },
             async () => {

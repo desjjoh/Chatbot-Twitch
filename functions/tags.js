@@ -18,7 +18,7 @@ async function tags(payload) {
   else
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested the command !${command}. The stream tags are ${CHANNEL?.tags
+      message: `@${username}. The stream tags are ${CHANNEL?.tags
         .map((tag) => `[${tag}]`)
         .join(', ')}.`
     })

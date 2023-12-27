@@ -25,7 +25,7 @@ async function followage(payload) {
 
     await sendChat({
       channel: dehash(channel),
-      message: `@${username} has requested the command !${command}. You have followed the stream since ${fDate} for a total of ${followage}`
+      message: `@${username}. You have followed the stream since ${fDate} for a total of ${followage}`
     })
   }
 }
