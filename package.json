@@ -1,14 +1,13 @@
 {
   "name": "twitchbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Chat bot for Twitch.tv",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node --esm src/index.ts"
   },
-  "author": "",
+  "author": "John 'Kenata8' Desjardins",
   "license": "ISC",
   "dependencies": {
     "@twurple/api": "^7.0.6",
@@ -18,10 +17,15 @@
     "moment": "^2.29.4",
     "sqlite3": "^5.1.6",
     "tmi.js": "^1.8.5",
+    "ts-node": "^10.9.2",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
+    "@tsconfig/node-lts": "^20.1.0",
+    "@types/node": "^20.10.5",
+    "@types/tmi.js": "^1.8.6",
     "eslint": "^8.56.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "typescript": "^5.3.3"
   }
 }
