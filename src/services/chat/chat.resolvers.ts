@@ -23,14 +23,18 @@ async function useActionCommandResolver(payload: ACTION_CMD): Promise<void> {
 }
 
 async function useChatbotResolver(job: Bull.Job<ChatbotPayloadType>, done: Bull.DoneCallback): Promise<void> {
-  await new Promise<void>(async (resolve, _reject) => {
-    switch (job.data.action) {
-      case ChatbotActions.ACTION_CMD:
-        await useActionCommandResolver(job.data)
-        resolve()
-      case ChatbotActions.SEND_MSG:
-        await sendChat(job.data)
-        resolve()
+  await new Promise<void>(async (resolve, reject) => {
+    try {
+      switch (job.data.action) {
+        case ChatbotActions.ACTION_CMD:
+          await useActionCommandResolver(job.data)
+          resolve()
+        case ChatbotActions.SEND_MSG:
+          await sendChat(job.data)
+          resolve()
+      }
+    } catch (err: any) {
+      reject(err)
     }
   }).then(
     () => done,

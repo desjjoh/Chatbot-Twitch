@@ -13,6 +13,7 @@ async function sendChat({ channel, message }: ISendChat): Promise<[string]> {
   return client.say(channel, message)
 }
 
+chatbot.empty()
 chatbot.process(useChatbotResolver)
 
 export { chatbot, sendChat }

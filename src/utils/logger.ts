@@ -35,6 +35,7 @@ async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   })
 }
 
+logger.empty()
 logger.process(async (job: Bull.Job<LoggerPayloadType>, done: Bull.DoneCallback) => {
   await logEvent(job.data).then(
     () => done(),
