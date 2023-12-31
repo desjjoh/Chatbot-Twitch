@@ -23,4 +23,4 @@ authProvider.onRefresh(async (userId, newTokenData) => {
   authProvider.addUser(userId, tokenData)
 })
 
-export { apiClient }
+export default apiClient

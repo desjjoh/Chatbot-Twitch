@@ -4,7 +4,9 @@ enum ChatbotActions {
 }
 
 enum COMMANDS {
-  GAME = 'game'
+  GAME = 'game',
+  TITLE = 'title',
+  SETGAME = 'setgame'
 }
 
 export { ChatbotActions, COMMANDS }

@@ -14,4 +14,4 @@ const CONFIG: Options = {
 
 const client: Client = new Client(CONFIG)
 
-export { client }
+export default client

@@ -9,4 +9,4 @@ const options: DataSourceOptions = {
 
 const dataSource: DataSource = new DataSource(options)
 
-export { dataSource }
+export default dataSource
