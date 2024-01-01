@@ -1,4 +1,6 @@
-import { appConfig } from '../lib/types/config'
+type appConfig = {
+  shoutoutOnJoin: boolean
+}
 
 const config: appConfig = {
   shoutoutOnJoin: false
