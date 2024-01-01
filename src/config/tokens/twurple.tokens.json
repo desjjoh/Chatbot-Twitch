@@ -1,12 +1,12 @@
 {
-  "accessToken": "oqiijw6699wy3kojkmf6vg8f4e9fhv",
-  "refreshToken": "ojqhtcvpaxq7mmcqmle4qsx9q6l3atw854adf0wjbgux1e07w7",
-  "scope": [
-    "channel:manage:broadcast",
-    "chat:edit",
-    "chat:read",
-    "moderator:read:followers"
-  ],
-  "expiresIn": 14045,
-  "obtainmentTimestamp": 1703463549517
+    "accessToken": "6f4t2oh2ggwq97vvl3fnpp1op3uxf0",
+    "refreshToken": "ojqhtcvpaxq7mmcqmle4qsx9q6l3atw854adf0wjbgux1e07w7",
+    "scope": [
+        "channel:manage:broadcast",
+        "chat:edit",
+        "chat:read",
+        "moderator:read:followers"
+    ],
+    "expiresIn": 13401,
+    "obtainmentTimestamp": 1704143278472
 }
