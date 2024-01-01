@@ -6,15 +6,17 @@ enum ChatbotActions {
 
 enum COMMANDS {
   ADDQUOTE = 'addquote',
+  EDITQUOTE = 'editquote',
+  REMOVEQUOTE = 'removequote',
   QUOTE = 'quote',
 
-  FOLLOWAGE = 'followage',
-  GAME = 'game',
   SHOUTOUT = 'shoutout',
-  TITLE = 'title',
   UPTIME = 'uptime',
 
+  GAME = 'game',
   SETGAME = 'setgame',
+
+  TITLE = 'title',
   SETTITLE = 'settitle'
 }
 

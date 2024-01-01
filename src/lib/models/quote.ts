@@ -18,4 +18,9 @@ type CreateQuote = {
   quote: string
 }
 
-export { Quote, CreateQuote }
+type EditQuote = {
+  id: number
+  quote: string
+}
+
+export { Quote, CreateQuote, EditQuote }

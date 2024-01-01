@@ -48,7 +48,7 @@ function onReconnect(): void {
 function onMessage(channel: string, userstate: ChatUserstate, message: string, self: boolean): void {
   if (self || !message.startsWith('!')) return
 
-  logger.add({ action: LoggerActions.INFO, message: `[@${userstate.username}] ${message}` })
+  logger.add({ action: LoggerActions.INFO, message: `[@${userstate.username}] "${message}"` })
   chatbot.add({ action: ChatbotActions.ACTION_CMD, channel, message, userstate })
 }
 
