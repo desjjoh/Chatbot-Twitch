@@ -17,7 +17,7 @@ async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   const moment: Moment.Moment = Moment()
   const timeString: string = moment.format('HH:mm')
   const dateString: string = moment.format('YYYYMMDD')
-  const calendar: string = moment.calendar()
+  const calendar: string = moment.format('L')
 
   const MSG: string = `[${timeString}] ${action}: ${message}`
   console.log(MSG)

@@ -1,12 +1,21 @@
 enum ChatbotActions {
-  ACTION_CMD = 'action_command',
-  SEND_MSG = 'send_message'
+  ACTION_CMD,
+  SEND_MSG,
+  RANDOM_QUOTE
 }
 
 enum COMMANDS {
+  ADDQUOTE = 'addquote',
+  QUOTE = 'quote',
+
+  FOLLOWAGE = 'followage',
   GAME = 'game',
+  SHOUTOUT = 'shoutout',
   TITLE = 'title',
-  SETGAME = 'setgame'
+  UPTIME = 'uptime',
+
+  SETGAME = 'setgame',
+  SETTITLE = 'settitle'
 }
 
 export { ChatbotActions, COMMANDS }

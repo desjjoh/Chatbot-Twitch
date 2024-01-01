@@ -1,4 +1,4 @@
-import { IUseStringFormatter, IPluralize, IUseNumberFormatter } from '../lib/types/formatter.ts'
+import { IUseStringFormatter, IPluralize, IUseNumberFormatter, IUseDateTimeFormatter } from '../lib/types/formatter.ts'
 
 function useStringFormatter(): IUseStringFormatter {
   function dehash(payload: string): string {
@@ -31,4 +31,30 @@ function useNumberFormatter(): IUseNumberFormatter {
   }
 }
 
-export { useStringFormatter, useNumberFormatter }
+function useDateTimeFormatter(): IUseDateTimeFormatter {
+  function formatMilliseconds(payload: number) {
+    const useSF = useStringFormatter()
+    let asSeconds = payload / 1000
+
+    let hours = undefined
+    let minutes = Math.floor(asSeconds / 60)
+
+    if (minutes > 59) {
+      hours = Math.floor(minutes / 60)
+      minutes %= 60
+    }
+
+    return hours
+      ? `${hours} ${useSF.pluralize({ word: 'hour', value: hours })} ${minutes} ${useSF.pluralize({
+          word: 'min',
+          value: minutes
+        })}`
+      : `${minutes} ${useSF.pluralize({ word: 'minute', value: minutes })}`
+  }
+
+  return {
+    formatMilliseconds
+  }
+}
+
+export { useStringFormatter, useNumberFormatter, useDateTimeFormatter }

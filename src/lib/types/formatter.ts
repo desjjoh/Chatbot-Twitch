@@ -10,4 +10,8 @@ type IUseNumberFormatter = {
   mins2ms: (payload: number) => number
 }
 
-export { IPluralize, IUseStringFormatter, IUseNumberFormatter }
+type IUseDateTimeFormatter = {
+  formatMilliseconds: (payload: number, padStart?: boolean) => string
+}
+
+export { IPluralize, IUseStringFormatter, IUseNumberFormatter, IUseDateTimeFormatter }

@@ -15,14 +15,26 @@ async function useActionCommandResolver(payload: ACTION_CMD): Promise<string> {
   const command = regExpMatchArray[1]
 
   switch (command) {
+    // case COMMANDS.FOLLOWAGE:
+    //   return ACTIONS.onFollowage(payload, regExpMatchArray)
     case COMMANDS.GAME:
-      return ACTIONS.onGame(payload)
+      return ACTIONS.onGame(payload, regExpMatchArray)
+    case COMMANDS.QUOTE:
+      return ACTIONS.onQuote(payload, regExpMatchArray)
+    case COMMANDS.SHOUTOUT:
+      return ACTIONS.onShoutout(payload, regExpMatchArray)
     case COMMANDS.TITLE:
-      return ACTIONS.onTitle(payload)
+      return ACTIONS.onTitle(payload, regExpMatchArray)
+    case COMMANDS.UPTIME:
+      return ACTIONS.onUptime(payload, regExpMatchArray)
     case COMMANDS.SETGAME:
       return ACTIONS.onSetGame(payload, regExpMatchArray)
+    case COMMANDS.SETTITLE:
+      return ACTIONS.onSetTitle(payload, regExpMatchArray)
+    case COMMANDS.ADDQUOTE:
+      return ACTIONS.onAddQuote(payload, regExpMatchArray)
     default:
-      throw new Error(`COMMAND ${command} NOT INITIALIZED`)
+      throw new Error(`No command named ${command} has been initialized.`)
   }
 }
 
@@ -37,7 +49,7 @@ async function useChatbotResolver(job: Bull.Job<ChatbotPayloadType>, done: Bull.
           break
         case ChatbotActions.SEND_MSG:
           await sendChat(job.data)
-          logger.add({ action: LoggerActions.INFO, message: job.data.message })
+          logger.add({ action: LoggerActions.INFO, message: `${job.data.message}` })
           break
       }
       resolve()
