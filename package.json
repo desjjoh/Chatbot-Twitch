@@ -2,10 +2,10 @@
   "name": "twitchbot",
   "version": "2.0.0",
   "description": "Chat bot for Twitch.tv",
-  "main": "src/index.ts",
+  "main": "src/main.ts",
   "type": "module",
   "scripts": {
-    "start": "ts-node --esm src/index.ts"
+    "start": "ts-node --esm src/main.ts"
   },
   "author": "John 'Kenata8' Desjardins",
   "license": "ISC",

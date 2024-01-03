@@ -1,10 +1,9 @@
-import { ACTION_CMD } from '../../../lib/types/chat.ts'
 import apiClient from '../../../plugins/twurple.ts'
 import { useStringFormatter } from '../../../utils/formatters.ts'
 
 const STRING = useStringFormatter()
 
-async function onTitle(payload: ACTION_CMD, _regExpMatchArray: RegExpMatchArray): Promise<string> {
+async function onTitle(payload: { channel: string }): Promise<string> {
   const user = await apiClient.users.getUserByName(STRING.dehash(payload.channel))
   if (!user) throw new Error(`Get user by name ${payload.channel} has failed.`)
 
@@ -14,19 +13,13 @@ async function onTitle(payload: ACTION_CMD, _regExpMatchArray: RegExpMatchArray)
   return `The current stream title is set to: ${channel.title}.`
 }
 
-async function onSetTitle(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray): Promise<string> {
-  const [_raw, _command, argument] = regExpMatchArray
-
-  const hasPermission = payload.userstate.badges?.broadcaster || payload.userstate.mod
-  if (!hasPermission)
-    throw new Error(`User ${payload.userstate.username} does not have permission to complete this action.`)
-
+async function onSetTitle(payload: { channel: string; argument: string }): Promise<string> {
   const user = await apiClient.users.getUserByName(STRING.dehash(payload.channel))
   if (!user) throw new Error(`Get user by name ${payload.channel} has failed.`)
 
   return apiClient.channels
-    .updateChannelInfo(user.id, { title: argument.trim() })
-    .then(() => `The stream title has been updated to: ${argument.trim()}.`)
+    .updateChannelInfo(user.id, { title: payload.argument.trim() })
+    .then(() => `The stream title has been updated to: ${payload.argument.trim()}.`)
 }
 
 export { onTitle, onSetTitle }

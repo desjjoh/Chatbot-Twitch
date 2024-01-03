@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { ACTION_CMD } from '../../../lib/types/chat.ts'
+
 import apiClient from '../../../plugins/twurple.ts'
 import { useStringFormatter } from '../../../utils/formatters.ts'
 import DatabaseService from '../../database/database.ts'
@@ -7,9 +7,7 @@ import { regExpIDExtract } from '../../../lib/constants/regex.ts'
 
 const STRING = useStringFormatter()
 
-async function onAddQuote(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray): Promise<string> {
-  const [_raw, _command, argument] = regExpMatchArray
-
+async function onAddQuote(payload: { channel: string; argument: string }): Promise<string> {
   const user = await apiClient.users.getUserByName(STRING.dehash(payload.channel))
   if (!user) throw new Error(`Get user by name ${payload.channel} has failed.`)
 
@@ -22,18 +20,16 @@ async function onAddQuote(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArra
   const quote = await DatabaseService.Quote.createQuote({
     gameId,
     gameName,
-    quote: argument.trim()
+    quote: payload.argument.trim()
   })
 
   return `Quote #${quote.$id} has been successfully added!`
 }
 
-async function onQuote(_payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray): Promise<string> {
-  const [_raw, _command, argument] = regExpMatchArray
-
-  if (argument) {
-    const quoteId = parseInt(argument)
-    if (isNaN(quoteId)) throw new Error(`Argument ${argument.trim()} could not be parsed into an integer.`)
+async function onQuote(payload: { argument: string }): Promise<string> {
+  if (payload.argument) {
+    const quoteId = parseInt(payload.argument)
+    if (isNaN(quoteId)) throw new Error(`Argument ${payload.argument.trim()} could not be parsed into an integer.`)
 
     const quote = await DatabaseService.Quote.getQuote(quoteId)
     if (!quote) throw new Error(`Quote with id ${quoteId} could not be found`)
@@ -47,14 +43,8 @@ async function onQuote(_payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray)
   }]`
 }
 
-async function onEditQuote(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray): Promise<string> {
-  const [_raw, _command, argument] = regExpMatchArray
-
-  const hasPermission = payload.userstate.badges?.broadcaster || payload.userstate.mod
-  if (!hasPermission)
-    throw new Error(`User ${payload.userstate.username} does not have permission to complete this action.`)
-
-  const regExp: RegExpMatchArray | null = argument.trim().match(regExpIDExtract)
+async function onEditQuote(payload: { argument: string }): Promise<string> {
+  const regExp: RegExpMatchArray | null = payload.argument.trim().match(regExpIDExtract)
   if (!regExp) throw new Error('Regular expression match failed.')
 
   const [_match, id, edit] = regExp
@@ -66,15 +56,9 @@ async function onEditQuote(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArr
   return `Quote #${quote?.$id} has been successfully updated.`
 }
 
-async function onDeleteQuote(payload: ACTION_CMD, regExpMatchArray: RegExpMatchArray): Promise<string> {
-  const [_raw, _command, argument] = regExpMatchArray
-
-  const hasPermission = payload.userstate.badges?.broadcaster || payload.userstate.mod
-  if (!hasPermission)
-    throw new Error(`User ${payload.userstate.username} does not have permission to complete this action.`)
-
-  const id = parseInt(argument.trim())
-  if (isNaN(id)) throw new Error(`Could not parse arguement ${argument.trim()} into an integer.`)
+async function onDeleteQuote(payload: { argument: string }): Promise<string> {
+  const id = parseInt(payload.argument.trim())
+  if (isNaN(id)) throw new Error(`Could not parse arguement ${payload.argument.trim()} into an integer.`)
 
   await DatabaseService.Quote.deleteQuote(id)
   return `Quote #${id} has been successfully removed.`

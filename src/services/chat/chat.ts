@@ -2,8 +2,8 @@ import Bull from 'bull'
 
 import { ChatbotPayloadType, ISendChat } from '../../lib/types/chat.ts'
 
-import { useChatbotResolver } from './chat.resolvers.ts'
-import * as EVENTS from './chat.listeners.ts'
+import { useChatbotResolver } from './resolvers/chatbot.resolver.ts'
+import * as EVENTS from './events/tmi.events.ts'
 
 import client from '../../plugins/tmi.ts'
 import { initDatabase } from '../database/database.ts'
