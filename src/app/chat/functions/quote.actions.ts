@@ -1,11 +1,11 @@
 import moment from 'moment'
 
-import apiClient from '../../../plugins/twurple.ts'
-import { useStringFormatter } from '../../../utils/formatters.ts'
+import apiClient from '../../../plugins/twurple.plugin.ts'
 import DatabaseService from '../../database/database.ts'
 import { regExpIDExtract } from '../../../lib/constants/regex.ts'
+import { useStringUtil } from '../../../utils/string.utils.ts'
 
-const STRING = useStringFormatter()
+const STRING = useStringUtil()
 
 async function onAddQuote(payload: { channel: string; argument: string }): Promise<string> {
   const user = await apiClient.users.getUserByName(STRING.dehash(payload.channel))
@@ -26,8 +26,8 @@ async function onAddQuote(payload: { channel: string; argument: string }): Promi
   return `Quote #${quote.$id} has been successfully added!`
 }
 
-async function onQuote(payload: { argument: string }): Promise<string> {
-  if (payload.argument) {
+async function onQuote(payload?: { argument: string | undefined }): Promise<string> {
+  if (payload?.argument) {
     const quoteId = parseInt(payload.argument)
     if (isNaN(quoteId)) throw new Error(`Argument ${payload.argument.trim()} could not be parsed into an integer.`)
 

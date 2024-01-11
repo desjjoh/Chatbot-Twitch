@@ -5,8 +5,8 @@ import { ChatbotPayloadType, ISendChat } from '../../lib/types/chat.ts'
 import { useChatbotResolver } from './resolvers/chatbot.resolver.ts'
 import * as EVENTS from './events/tmi.events.ts'
 
-import client from '../../plugins/tmi.ts'
-import { initDatabase } from '../database/database.ts'
+import client from '../../plugins/tmi.plugin.ts'
+import dataSource from '../../plugins/typeorm.plugin.ts'
 
 const CONFIG: Bull.QueueOptions = { limiter: { max: 1, duration: 3000 } }
 const chatbot: Bull.Queue<ChatbotPayloadType> = new Bull<ChatbotPayloadType>('chatbot', CONFIG)
@@ -30,7 +30,7 @@ async function initChat(): Promise<void> {
   client.on('message', EVENTS.onMessage)
 
   // Initialize Plugins
-  await initDatabase()
+  await dataSource.initialize()
   await client.connect()
 }
 

@@ -4,9 +4,9 @@ import { ChatbotPayloadType } from '../../../lib/types/chat.ts'
 import { ChatbotActions } from '../../../lib/enums/chat.ts'
 import { LoggerActions } from '../../../lib/enums/logger.ts'
 
-import { sendChat } from '../../../services/chat/chat.ts'
+import { sendChat } from '../../../app/chat/chat.ts'
 
-import { logger } from '../../../utils/logger.ts'
+import { logger } from '../../../utils/logger.utils.ts'
 
 import { useActionCommandResolver } from './actions.resolver.ts'
 
@@ -15,9 +15,9 @@ async function useChatbotResolver(job: Bull.Job<ChatbotPayloadType>, done: Bull.
     try {
       switch (job.data.action) {
         case ChatbotActions.ACTION_CMD:
-          const result = await useActionCommandResolver(job.data)
-          await sendChat({ channel: job.data.channel, message: result })
-          logger.add({ action: LoggerActions.INFO, message: result })
+          const ACTION_CMD_RESULT = await useActionCommandResolver(job.data)
+          await sendChat({ channel: job.data.channel, message: ACTION_CMD_RESULT })
+          logger.add({ action: LoggerActions.INFO, message: ACTION_CMD_RESULT })
           break
         case ChatbotActions.SEND_MSG:
           await sendChat(job.data)

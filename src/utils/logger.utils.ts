@@ -1,17 +1,11 @@
-import * as fs from 'fs'
 import Path from 'path'
 import Bull from 'bull'
 import Moment from 'moment'
 
 import { LoggerPayloadType } from '../lib/types/logger.ts'
+import * as FM from './fileManager.utils.ts'
 
-const CONFIG: Bull.QueueOptions = {}
-const logger: Bull.Queue<LoggerPayloadType> = new Bull<LoggerPayloadType>('logger', CONFIG)
-
-function readFile(srcPath: string): string | undefined {
-  if (fs.existsSync(srcPath)) return fs.readFileSync(srcPath, { encoding: 'utf8' })
-  else return undefined
-}
+const logger: Bull.Queue<LoggerPayloadType> = new Bull<LoggerPayloadType>('logger')
 
 async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   const moment: Moment.Moment = Moment()
@@ -23,16 +17,10 @@ async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   console.log(MSG)
 
   const srcPath: string = Path.join(process.cwd(), `./logs/${dateString}.log`)
-  let logs: string = readFile(srcPath) || `[${timeString}] LOG START -- ${calendar}`
+  let logs: string = FM.readFile(srcPath) || `[${timeString}] LOG START -- ${calendar}`
   logs += `\n${MSG}`
 
-  await new Promise<void>((resolve, reject) => {
-    fs.writeFile(srcPath, logs, (err) => {
-      if (err) {
-        reject(`Could not write to file ${srcPath}.`)
-      } else resolve()
-    })
-  })
+  await FM.writeFile(srcPath, logs)
 }
 
 logger.empty()

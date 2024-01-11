@@ -1,7 +1,7 @@
 enum ChatbotActions {
   ACTION_CMD,
   SEND_MSG,
-  RANDOM_QUOTE
+  RANDOM_EVENT
 }
 
 enum COMMANDS {
@@ -10,11 +10,17 @@ enum COMMANDS {
   REMOVEQUOTE = 'removequote',
   QUOTE = 'quote',
 
-  SHOUTOUT = 'shoutout',
-  UPTIME = 'uptime',
+  BOT = 'bot',
+  ROLL = 'roll',
 
   GAME = 'game',
   SETGAME = 'setgame',
+
+  SHOUTOUT = 'shoutout',
+  UPTIME = 'uptime',
+
+  TAGS = 'tags',
+  SETTAGS = 'settags',
 
   TITLE = 'title',
   SETTITLE = 'settitle'

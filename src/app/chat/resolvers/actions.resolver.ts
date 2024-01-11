@@ -5,8 +5,7 @@ import { COMMANDS } from '../../../lib/enums/chat.ts'
 import { regExpCommand } from '../../../lib/constants/regex.ts'
 
 import * as QUOTES from '../functions/quote.actions.ts'
-import * as GAME from '../functions/game.actions.ts'
-import * as TITLE from '../functions/title.actions.ts'
+import * as CHANNEL from '../functions/channel.actions.ts'
 import * as MISC from '../functions/misc.actions.ts'
 
 async function hasPermission(userstate: ChatUserstate): Promise<void> {
@@ -22,20 +21,29 @@ async function useActionCommandResolver({ channel, userstate, message }: ACTION_
 
   switch (command) {
     case COMMANDS.GAME:
-      return GAME.onGame({ channel })
-    case COMMANDS.SETGAME:
-      await hasPermission(userstate)
-      return GAME.onSetGame({ channel, argument })
+      return CHANNEL.onGame({ channel })
     case COMMANDS.SHOUTOUT:
       await hasPermission(userstate)
-      return MISC.onShoutout({ channel, argument })
-    case COMMANDS.UPTIME:
-      return MISC.onUptime({ channel })
+      return CHANNEL.onShoutout({ channel, argument })
+    case COMMANDS.TAGS:
+      return CHANNEL.onTags({ channel })
     case COMMANDS.TITLE:
-      return TITLE.onTitle({ channel })
+      return CHANNEL.onTitle({ channel })
+    case COMMANDS.UPTIME:
+      return CHANNEL.onUptime({ channel })
+
+    case COMMANDS.SETGAME:
+      await hasPermission(userstate)
+      return CHANNEL.onSetGame({ channel, argument })
     case COMMANDS.SETTITLE:
       await hasPermission(userstate)
-      return TITLE.onSetTitle({ channel, argument })
+      return CHANNEL.onSetTitle({ channel, argument })
+
+    case COMMANDS.BOT:
+      return MISC.onBot()
+    case COMMANDS.ROLL:
+      return MISC.onRoll({ userstate })
+
     case COMMANDS.ADDQUOTE:
       return QUOTES.onAddQuote({ channel, argument })
     case COMMANDS.QUOTE:

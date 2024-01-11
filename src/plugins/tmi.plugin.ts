@@ -1,12 +1,21 @@
 import { Client, Options } from 'tmi.js'
 
+declare const process: {
+  env: {
+    CHANNEL_NAME: string
+    TTV_USERNAME: string
+    PASSWORD: string
+  }
+}
+
 const { CHANNEL_NAME, TTV_USERNAME, PASSWORD } = process.env
+
 const CONFIG: Options = {
   identity: {
-    username: TTV_USERNAME as string,
-    password: PASSWORD as string
+    username: TTV_USERNAME,
+    password: PASSWORD
   },
-  channels: [CHANNEL_NAME as string],
+  channels: [CHANNEL_NAME],
   options: {
     // debug: true
   }

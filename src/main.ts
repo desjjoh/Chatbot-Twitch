@@ -1,5 +1,5 @@
 import 'dotenv/config'
 
-import { initChat } from './services/chat/chat.ts'
+import { initChat } from './app/chat/chat.ts'
 
-await initChat()
+initChat()
