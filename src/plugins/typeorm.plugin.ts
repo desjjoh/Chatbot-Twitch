@@ -1,6 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
-
-import { Quote } from '../app/database/models/quote.ts'
+import { Quote } from '../app/database/models/quote'
 
 declare const process: {
   env: {

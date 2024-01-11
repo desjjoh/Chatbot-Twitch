@@ -1,8 +1,8 @@
 import { ChatUserstate } from 'tmi.js'
 
-import { ACTION_CMD } from '../../../lib/types/chat.ts'
-import { COMMANDS } from '../../../lib/enums/chat.ts'
-import { regExpCommand } from '../../../lib/constants/regex.ts'
+import { ACTION_CMD } from '../../lib/types/chat.ts'
+import { COMMANDS } from '../../lib/enums/chat.ts'
+import { regExpCommand } from '../../lib/constants/regex.ts'
 
 import * as QUOTES from '../functions/quote.actions.ts'
 import * as CHANNEL from '../functions/channel.actions.ts'

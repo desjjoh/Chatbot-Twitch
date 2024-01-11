@@ -1,14 +1,14 @@
 import Bull from 'bull'
 
-import { ChatbotPayloadType } from '../../../lib/types/chat.ts'
-import { ChatbotActions } from '../../../lib/enums/chat.ts'
-import { LoggerActions } from '../../../lib/enums/logger.ts'
+import { ChatbotPayloadType } from '../../lib/types/chat.ts'
+import { ChatbotActions } from '../../lib/enums/chat.ts'
+import { LoggerActions } from '../../lib/enums/logger.ts'
 
-import { sendChat } from '../../../app/chat/chat.ts'
 
-import { logger } from '../../../utils/logger.utils.ts'
+import { logger } from '../queues/logger.queue.ts'
 
 import { useActionCommandResolver } from './actions.resolver.ts'
+import { sendChat } from '../queues/chat.queue.ts'
 
 async function useChatbotResolver(job: Bull.Job<ChatbotPayloadType>, done: Bull.DoneCallback): Promise<void> {
   await new Promise<void>(async (resolve, reject) => {

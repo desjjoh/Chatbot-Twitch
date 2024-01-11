@@ -2,10 +2,11 @@ import Path from 'path'
 import Bull from 'bull'
 import Moment from 'moment'
 
-import { LoggerPayloadType } from '../lib/types/logger.ts'
-import * as FM from './fileManager.utils.ts'
+import { LoggerPayloadType } from '../../lib/types/logger.ts'
+import { useFileManager } from '../../utils/fileManager.util.ts'
 
 const logger: Bull.Queue<LoggerPayloadType> = new Bull<LoggerPayloadType>('logger')
+const FM = useFileManager()
 
 async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   const moment: Moment.Moment = Moment()

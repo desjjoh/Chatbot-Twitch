@@ -1,11 +1,10 @@
 import { ChatUserstate } from 'tmi.js'
 
-import { logger } from '../../../utils/logger.utils.ts'
+import { logger } from '../queues/logger.queue.ts'
 
-import { LoggerActions } from '../../../lib/enums/logger.ts'
-import { ChatbotActions } from '../../../lib/enums/chat.ts'
-
-import chatbot from '../../../app/chat/chat.ts'
+import { LoggerActions } from '../../lib/enums/logger.ts'
+import { ChatbotActions } from '../../lib/enums/chat.ts'
+import chatbot from '../queues/chat.queue.ts'
 
 function onConnecting(address: string, port: number): void {
   const message = `Connecting to ${address} on port ${port}..`

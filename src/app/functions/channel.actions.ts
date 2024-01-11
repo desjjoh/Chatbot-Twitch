@@ -1,7 +1,7 @@
-import apiClient from '../../../plugins/twurple.plugin.ts'
+import apiClient from '../../plugins/twurple.plugin.ts'
 
-import { useDateTimeUtil } from '../../../utils/date.utils.ts'
-import { useStringUtil } from '../../../utils/string.utils.ts'
+import { useDateTimeUtil } from '../../utils/date.util.ts'
+import { useStringUtil } from '../../utils/string.util.ts'
 
 const STRING = useStringUtil()
 const DATE = useDateTimeUtil()

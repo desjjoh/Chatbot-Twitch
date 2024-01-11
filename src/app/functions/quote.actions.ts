@@ -1,9 +1,9 @@
 import moment from 'moment'
 
-import apiClient from '../../../plugins/twurple.plugin.ts'
-import DatabaseService from '../../database/database.ts'
-import { regExpIDExtract } from '../../../lib/constants/regex.ts'
-import { useStringUtil } from '../../../utils/string.utils.ts'
+import apiClient from '../../plugins/twurple.plugin.ts'
+import { regExpIDExtract } from '../../lib/constants/regex.ts'
+import { useStringUtil } from '../../utils/string.util.ts'
+import DatabaseService from '../database/database.ts'
 
 const STRING = useStringUtil()
 
