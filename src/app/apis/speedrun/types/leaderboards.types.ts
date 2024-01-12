@@ -1,12 +1,12 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/leaderboards.md
 
-import { TDateISO } from '../../../../lib/types/date.types.ts'
+import { TDateISO } from "../../../../lib/types/date.types";
 
 type values = { [key: string]: string }
 type runs = { place: number; run: run }
 type links = { rel: string; uri: string }
 type uri = { uri: string }
-type videos = { links: uri[] }
+type videos = { links: Array<uri> }
 
 type status = {
   status: string
@@ -57,8 +57,8 @@ type leaderboard = {
     ['video-only']: boolean | null
     timing: string | null
     values: values
-    runs: runs[]
-    links: links[]
+    runs: Array<runs>
+    links: Array<links>
   }
 }
 

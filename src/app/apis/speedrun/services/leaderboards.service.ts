@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 import { leaderboardParams, leaderboard } from '../types/leaderboards.types.ts'
-import { instance } from '../speedrun.api.ts'
+import { instance } from '../config/speedrun.config.ts'
 
 class leaderboards {
   public static async getLeaderboard(
