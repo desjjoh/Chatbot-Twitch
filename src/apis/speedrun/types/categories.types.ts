@@ -1,3 +1,5 @@
+// https://github.com/speedruncomorg/api/blob/master/version1/categories.md
+
 import { game } from './games.types'
 import { variable } from './variables.types'
 
@@ -29,4 +31,11 @@ enum categoryEmbeds {
   VARIABLES = 'variables' // will embed the applicable variables for this category. See below for another way to get these and what applicable means.
 }
 
-export { category, categoryEmbeds }
+enum categoryOrder {
+  NAME = 'name', // sorts alphanumerically by the category name
+  MANDATORY = 'mandatory', // sorts by mandatory flag
+  ['USER-DEFINED'] = 'user-defined', // sorts by user-defined flag
+  POS = 'pos' // uses the order as defined by the game moderator
+}
+
+export { category, categoryEmbeds, categoryOrder }

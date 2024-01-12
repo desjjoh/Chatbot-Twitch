@@ -1,3 +1,5 @@
+// https://github.com/speedruncomorg/api/blob/master/version1/runs.md
+
 type values = { [key: string]: string }
 type uri = { uri: string }
 type videos = { links: Array<uri> }
@@ -51,8 +53,8 @@ type runParams = {
   category?: string // category ID; when given, restricts to that category
   platform?: string // platform ID; when given, restricts to that platform
   region?: string // region ID; when given, restricts to that region
-  emulated?: boolean // emulated	bool	when 1, yes or true, only games run on emulator will be returned
-  // status	string	filters by run status; new, verified and rejected are possible values for this parameter
+  emulated?: boolean // when 1, yes or true, only games run on emulator will be returned
+  status?: 'new' | 'verified' | 'rejected' // filters by run status; new, verified and rejected are possible values for this parameter
 }
 
 enum runEmbeds {

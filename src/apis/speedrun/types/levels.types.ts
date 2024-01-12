@@ -1,3 +1,5 @@
+// https://github.com/speedruncomorg/api/blob/master/version1/levels.md
+
 type link = {
   rel: string
   uri: string
@@ -16,4 +18,9 @@ type recordsParams = {
   ['skip-empty']?: boolean // when set to a true value, empty leaderboards will not show up in the result
 }
 
-export { level, recordsParams }
+enum levelsEmbeds {
+  CATEGORIES = 'categories',
+  VARIABLES = 'variables'
+}
+
+export { level, recordsParams, levelsEmbeds }

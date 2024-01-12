@@ -1,3 +1,5 @@
+// https://github.com/speedruncomorg/api/blob/master/version1/variables.md
+
 type flags = { miscellaneous: false }
 type scope = { type: 'global' | 'full-game' | 'all-levels' | 'single-level' }
 

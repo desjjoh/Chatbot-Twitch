@@ -2,6 +2,7 @@
 
 import { category } from './categories.types'
 import { level } from './levels.types'
+import { direction } from './sorting.types'
 import { variable } from './variables.types'
 
 type names = {
@@ -86,6 +87,12 @@ type gamesParams = {
   developer?: string // developer ID; when given, restricts to that developer
   publisher?: string // publisher ID; when given, restricts to that publisher
   moderator?: string // moderator ID; when given, only games moderated by that user will be returned
+
+  max?: number
+  offset?: number
+
+  orderby?: gameOrder
+  direction?: direction
 }
 
 type recordsParams = {
@@ -93,6 +100,15 @@ type recordsParams = {
   scope?: 'full-game' | 'levels' | 'all' // when set to full-game, only full-game categories will be included; when set to levels, only individual levels are returned; default is all
   miscellaneous?: boolean // when set to a false value, miscellaneous categories will not be included
   ['skip-empty']?: boolean // when set to a true value, empty leaderboards will not show up in the result
+}
+
+enum gameOrder {
+  NAME_INT = 'name.int', // (default) sorts alphanumerically by the international name
+  NAME_JAP = 'name.jap', // sorts alphanumerically by the japanese name
+  ABBREVIATION = 'abbreviation', // sorts alphanumerically by the abbreviation
+  RELEASED = 'released', // sorts by the release date
+  CREATED = 'created', // sorts by the date when the game was added on speedrun.com
+  SIMILARITY = 'similarity' // sorts by string similarity; only available when searching games by name; default when searching by name
 }
 
 enum gameEmbeds {

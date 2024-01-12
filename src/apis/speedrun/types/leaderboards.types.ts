@@ -1,11 +1,12 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/leaderboards.md
 
-import { TDateISO } from '../../../../lib/types/date.types'
 import { game } from './games.types'
 import { category } from './categories.types.ts'
 import { level } from './levels.types.ts'
 import { variable } from './variables.types.ts'
 import { run } from './runs.types.ts'
+
+import { TDateISO } from '../../../lib/types/date.types.ts'
 
 type values = { [key: string]: string }
 type record = { place: number; run: run }
