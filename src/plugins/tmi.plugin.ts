@@ -17,7 +17,7 @@ const CONFIG: Options = {
   },
   channels: [CHANNEL_NAME],
   options: {
-    // debug: true
+    debug: true
   }
 }
 

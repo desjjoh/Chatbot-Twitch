@@ -15,7 +15,6 @@ async function logEvent({ action, message }: LoggerPayloadType): Promise<void> {
   const calendar: string = moment.format('L')
 
   const MSG: string = `[${timeString}] ${action}: ${message}`
-  console.log(MSG)
 
   const srcPath: string = Path.join(process.cwd(), `./logs/${dateString}.log`)
   let logs: string = FM.readFile(srcPath) || `[${timeString}] LOG START -- ${calendar}`
