@@ -1,6 +1,9 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/leaderboards.md
 
-import { TDateISO } from "../../../../lib/types/date.types";
+import { TDateISO } from '../../../../lib/types/date.types'
+import { game } from './games.types'
+import { category } from './categories.types.ts'
+import { level } from './levels.types.ts'
 
 type values = { [key: string]: string }
 type runs = { place: number; run: run }
@@ -46,20 +49,18 @@ type run = {
 }
 
 type leaderboard = {
-  data: {
-    weblink: string
-    game: string
-    category: string
-    level: string | null
-    platform: string | null
-    region: string | null
-    emulators: boolean | null
-    ['video-only']: boolean | null
-    timing: string | null
-    values: values
-    runs: Array<runs>
-    links: Array<links>
-  }
+  weblink: string
+  game: { data: game } | string
+  category: { data: category } | string
+  level: { data: level } | string | null
+  platform: string | null
+  region: string | null
+  emulators: boolean | null
+  ['video-only']: boolean | null
+  timing: string | null
+  values: values
+  runs: Array<runs>
+  links: Array<links>
 }
 
 type leaderboardParams = {
@@ -73,4 +74,14 @@ type leaderboardParams = {
   date?: TDateISO // ISO 8601 date string; when given, only returns runs done before or on this date
 }
 
-export { leaderboard, leaderboardParams }
+enum leaderboardEmbeds {
+  GAME = 'game', // will embed the full game resource.
+  CATEGORY = 'category', // will embed the category used for the leaderboard.
+  LEVEL = 'level', // will embed the category used for the leaderboard.
+  PLAYERS = 'players', // will add a new players element to the leaderboard, containing a flat list of all players of all runs on the leaderboard.
+  REGIONS = 'regions', // will add all used regions.
+  PLATFORMS = 'platforms', // will add all used platforms.
+  VARIABLES = 'variables' // will add all applicable variables for the chosen level/category.
+}
+
+export { leaderboard, leaderboardParams, leaderboardEmbeds }

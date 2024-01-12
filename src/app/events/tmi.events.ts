@@ -21,17 +21,17 @@ function onConnected(_address: string, _port: number): void {
   logger.add({ action: LoggerActions.INFO, message })
 }
 
-function onJoin(channel: string, username: string, self: boolean): void {
+function onJoin(channel: string, _username: string, self: boolean): void {
   if (!self) return
 
   const message = `Joined ${channel}`
   logger.add({ action: LoggerActions.INFO, message })
 
-  chatbot.add({
-    action: ChatbotActions.SEND_MSG,
-    channel,
-    message: `Hi I'm ${username}! How may I help you today?`
-  })
+  // chatbot.add({
+  //   action: ChatbotActions.SEND_MSG,
+  //   channel,
+  //   message: `Hi I'm ${username}! How may I help you today?`
+  // })
 }
 
 function onDisconnected(reason: string): void {

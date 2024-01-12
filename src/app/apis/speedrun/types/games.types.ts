@@ -17,6 +17,36 @@ type ruleset = {
   ['emulators-allowed']: boolean
 }
 
+type moderators = {
+  [key: string]: 'moderator' | 'super-moderator'
+}
+
+type asset = {
+  uri: string
+  width: number
+  height: number
+}
+
+type assets = {
+  logo: asset
+  ['cover-tiny']: asset
+  ['cover-small']: asset
+  ['cover-medium']: asset
+  ['cover-large']: asset
+  icon: asset
+  ['trophy-1st']: asset
+  ['trophy-2nd']: asset
+  ['trophy-3rd']: asset
+  ['trophy-4th']: asset | null
+  background: asset | null
+  foreground: asset | null
+}
+
+type links = {
+  rel: string
+  uri: string
+}
+
 type game = {
   id: string
   names: names
@@ -31,6 +61,10 @@ type game = {
   genres: Array<string>
   developers: Array<string>
   publishers: Array<string>
+  moderators: moderators
+  created: Date
+  assets: assets
+  links: Array<links>
 }
 
 type gamesParams = {
@@ -47,4 +81,11 @@ type gamesParams = {
   moderator?: string // moderator ID; when given, only games moderated by that user will be returned
 }
 
-export { game, gamesParams }
+type recordsParams = {
+  top?: number // only return the top N places (this can result in more than N runs!); this is set to 3 by default
+  scope?: 'full-game' | 'levels' | 'all' // when set to full-game, only full-game categories will be included; when set to levels, only individual levels are returned; default is all
+  miscellaneous?: boolean // when set to a false value, miscellaneous categories will not be included
+  ['skip-empty']?: boolean // when set to a true value, empty leaderboards will not show up in the result
+}
+
+export { game, gamesParams, recordsParams }
