@@ -1,8 +1,8 @@
 import Bull from 'bull'
 
-import { ChatbotPayloadType } from '../../lib/types/chat.ts'
-import { ChatbotActions } from '../../lib/enums/chat.ts'
-import { LoggerActions } from '../../lib/enums/logger.ts'
+import { ChatbotPayloadType } from '../../lib/types/chat.types.ts'
+import { ChatbotActions } from '../../lib/enums/chat.enums.ts'
+import { LoggerActions } from '../../lib/enums/logger.enums.ts'
 
 
 import { logger } from '../queues/logger.queue.ts'

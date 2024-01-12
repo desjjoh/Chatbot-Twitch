@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 import apiClient from '../../plugins/twurple.plugin.ts'
-import { regExpIDExtract } from '../../lib/constants/regex.ts'
+import { regExpIDExtract } from '../../lib/constants/regex.constants.ts'
 import { useStringUtil } from '../../utils/string.util.ts'
 import DatabaseService from '../database/database.ts'
 

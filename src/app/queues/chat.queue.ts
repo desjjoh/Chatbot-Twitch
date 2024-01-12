@@ -1,6 +1,6 @@
 import Bull from 'bull'
 
-import { ChatbotPayloadType, ISendChat } from '../../lib/types/chat.ts'
+import { ChatbotPayloadType, ISendChat } from '../../lib/types/chat.types.ts'
 
 import { useChatbotResolver } from '../resolvers/chatbot.resolver.ts'
 

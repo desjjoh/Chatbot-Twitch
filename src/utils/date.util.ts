@@ -12,7 +12,7 @@ function useDateTimeUtil(): IUseDateTimeUtil {
     return payload * 60 * 1000
   }
 
-  function formatMilliseconds(payload: number) {
+  function formatMilliseconds(payload: number): string {
     let asSeconds = payload / 1000
 
     let hours = undefined

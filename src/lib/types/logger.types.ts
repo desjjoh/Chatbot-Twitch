@@ -1,4 +1,4 @@
-import { LoggerActions } from '../enums/logger.ts'
+import { LoggerActions } from '../enums/logger.enums.ts'
 
 type LoggerPayloadType = { action: LoggerActions; message: string }
 

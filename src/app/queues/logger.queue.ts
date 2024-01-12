@@ -2,7 +2,7 @@ import Path from 'path'
 import Bull from 'bull'
 import Moment from 'moment'
 
-import { LoggerPayloadType } from '../../lib/types/logger.ts'
+import { LoggerPayloadType } from '../../lib/types/logger.types.ts'
 import { useFileManager } from '../../utils/fileManager.util.ts'
 
 const logger: Bull.Queue<LoggerPayloadType> = new Bull<LoggerPayloadType>('logger')

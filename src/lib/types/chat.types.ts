@@ -1,6 +1,6 @@
 import { ChatUserstate } from 'tmi.js'
 
-import { ChatbotActions } from '../enums/chat.ts'
+import { ChatbotActions } from '../enums/chat.enums.ts'
 
 type ACTION_CMD = {
   action: ChatbotActions.ACTION_CMD
