@@ -13,7 +13,10 @@ class leaderboards {
   ): Promise<leaderboard> {
     return instance
       .get<leaderboard>(`leaderboards/${gameId}/category/${categoryId}`, {
-        params: { ...params, embed: [leaderboardEmbeds.GAME, leaderboardEmbeds.CATEGORY].join(',') }
+        params: {
+          ...params,
+          embed: [leaderboardEmbeds.GAME, leaderboardEmbeds.CATEGORY, leaderboardEmbeds.VARIABLES].join(',')
+        }
       })
       .then((response: AxiosResponse) => response.data['data'])
   }

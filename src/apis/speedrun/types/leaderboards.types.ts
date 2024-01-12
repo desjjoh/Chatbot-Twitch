@@ -4,49 +4,12 @@ import { TDateISO } from '../../../../lib/types/date.types'
 import { game } from './games.types'
 import { category } from './categories.types.ts'
 import { level } from './levels.types.ts'
+import { variable } from './variables.types.ts'
+import { run } from './runs.types.ts'
 
 type values = { [key: string]: string }
-type runs = { place: number; run: run }
-type links = { rel: string; uri: string }
-type uri = { uri: string }
-type videos = { links: Array<uri> }
-
-type status = {
-  status: string
-  examiner: string
-  ['verify-date']: Date
-}
-
-type times = {
-  primary: string
-  primary_t: number
-  realtime: string | null
-  realtime_t: number
-  realtime_noloads: string | null
-  realtime_noloads_t: number
-  ingame: string | null
-  ingame_t: number
-}
-type system = {
-  platform: string
-  emulated: boolean
-  region: string
-}
-
-type run = {
-  id: string
-  weblink: string
-  game: string
-  category: string
-  videos: videos
-  comment: string
-  status: status
-  date: string
-  submitted: Date
-  times: times
-  system: system
-  values: values
-}
+type record = { place: number; run: run }
+type link = { rel: string; uri: string }
 
 type leaderboard = {
   weblink: string
@@ -59,8 +22,9 @@ type leaderboard = {
   ['video-only']: boolean | null
   timing: string | null
   values: values
-  runs: Array<runs>
-  links: Array<links>
+  runs: Array<record>
+  links: Array<link>
+  variables?: { data: Array<variable> }
 }
 
 type leaderboardParams = {
@@ -77,7 +41,7 @@ type leaderboardParams = {
 enum leaderboardEmbeds {
   GAME = 'game', // will embed the full game resource.
   CATEGORY = 'category', // will embed the category used for the leaderboard.
-  LEVEL = 'level', // will embed the category used for the leaderboard.
+  LEVEL = 'level', // will embed the level used for the leaderboard.
   PLAYERS = 'players', // will add a new players element to the leaderboard, containing a flat list of all players of all runs on the leaderboard.
   REGIONS = 'regions', // will add all used regions.
   PLATFORMS = 'platforms', // will add all used platforms.

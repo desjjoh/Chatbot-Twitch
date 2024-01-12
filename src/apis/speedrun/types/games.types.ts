@@ -1,5 +1,9 @@
 // https://github.com/speedruncomorg/api/blob/master/version1/games.md
 
+import { category } from './categories.types'
+import { level } from './levels.types'
+import { variable } from './variables.types'
+
 type names = {
   international: string
   japanese: string | null
@@ -65,6 +69,9 @@ type game = {
   created: Date
   assets: assets
   links: Array<links>
+  categories?: { data: Array<category> }
+  levels?: { data: Array<level> }
+  variables?: { data: Array<variable> }
 }
 
 type gamesParams = {
@@ -88,4 +95,18 @@ type recordsParams = {
   ['skip-empty']?: boolean // when set to a true value, empty leaderboards will not show up in the result
 }
 
-export { game, gamesParams, recordsParams }
+enum gameEmbeds {
+  LEVELS = 'levels', // will embed all levels defined for the game.
+  CATEGORIES = 'categories', // will embed all defined categories for the game.
+  MODERATORS = 'moderators', // will embed the moderators as full user resources.
+  GAMETYPES = 'gametypes', // will embed all assigned game types.
+  PLATFORMS = 'platforms', // will embed all assigned platforms.
+  REGIONS = 'regions', // will embed all assigned regions.
+  GENRES = 'genres', // will embed all assigned genres.
+  ENGINES = 'engines', // will embed all assigned engines.
+  DEVELOPERS = 'developers', // will embed all assigned developers.
+  PUBLISHERS = 'publishers', // will embed all assigned publishers.
+  VARIABLES = 'variables' // will embed all defined variables for the game.
+}
+
+export { game, gamesParams, recordsParams, gameEmbeds }

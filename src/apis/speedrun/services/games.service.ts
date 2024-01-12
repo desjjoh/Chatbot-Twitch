@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { instance } from '../config/speedrun.config.ts'
-import { game, gamesParams, recordsParams } from '../types/games.types.ts'
+import { game, gameEmbeds, gamesParams, recordsParams } from '../types/games.types.ts'
 import { category } from '../types/categories.types.ts'
 import { leaderboard } from '../types/leaderboards.types.ts'
 import { level } from '../types/levels.types.ts'
@@ -18,7 +18,11 @@ class games {
   // GET /games/{game}
   // This will retrieve a single game, identified by its ID. Instead of the game's ID, you can also specify the game's abbreviation.
   public static async getGameById(gameId: string): Promise<game> {
-    return instance.get<game>(`games/${gameId}`).then((response: AxiosResponse) => response.data['data'])
+    return instance
+      .get<game>(`games/${gameId}`, {
+        params: { embed: [gameEmbeds.CATEGORIES, gameEmbeds.LEVELS, gameEmbeds.VARIABLES].join(',') }
+      })
+      .then((response: AxiosResponse) => response.data['data'])
   }
 
   // GET /games/{game}/categories

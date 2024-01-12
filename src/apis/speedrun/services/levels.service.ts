@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios'
-import { instance } from '../config/speedrun.config'
-import { level, recordsParams } from '../types/levels.types'
-import { category } from '../types/categories.types'
-import { variable } from '../types/variables.types'
-import { leaderboard } from '../types/leaderboards.types'
+import { instance } from '../config/speedrun.config.ts'
+import { level, recordsParams } from '../types/levels.types.ts'
+import { category } from '../types/categories.types.ts'
+import { variable } from '../types/variables.types.ts'
+import { leaderboard } from '../types/leaderboards.types.ts'
 
 class levels {
   // GET /levels/{level}
