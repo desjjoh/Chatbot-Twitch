@@ -22,6 +22,7 @@ async function useActionCommandResolver({ channel, userstate, message }: ACTION_
   switch (command) {
     case COMMANDS.GAME:
       return CHANNEL.onGame({ channel })
+    case COMMANDS.SO:
     case COMMANDS.SHOUTOUT:
       await hasPermission(userstate)
       return CHANNEL.onShoutout({ channel, argument })
@@ -43,6 +44,8 @@ async function useActionCommandResolver({ channel, userstate, message }: ACTION_
       return MISC.onBot()
     case COMMANDS.ROLL:
       return MISC.onRoll({ userstate })
+    case COMMANDS.LIST:
+      return MISC.onList()
 
     case COMMANDS.ADDQUOTE:
       return QUOTES.onAddQuote({ channel, argument })

@@ -15,10 +15,7 @@ const CONFIG: Options = {
     username: TTV_USERNAME,
     password: PASSWORD
   },
-  channels: [CHANNEL_NAME],
-  options: {
-    // debug: true
-  }
+  channels: [CHANNEL_NAME]
 }
 
 const client: Client = new Client(CONFIG)

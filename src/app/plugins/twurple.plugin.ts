@@ -6,7 +6,7 @@ import path from 'path'
 
 const { CLIENTID, CLIENTSECRET } = process.env
 
-const tokenPath: string = path.join(process.cwd(), './config/twurple.tokens.json')
+const tokenPath: string = path.join(process.cwd(), './src/lib/config/twurple.tokens.json')
 const tokenData = JSON.parse(await fs.readFile(tokenPath, 'utf8'))
 
 const authProvider: RefreshingAuthProvider = new RefreshingAuthProvider({

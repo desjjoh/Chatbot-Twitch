@@ -1,5 +1,5 @@
 import { CreateQuote, EditQuote, Quote } from '../models/quote.ts'
-import dataSource from '../../../plugins/typeorm.plugin.ts'
+import dataSource from '../../plugins/typeorm.plugin.ts'
 
 const quoteRepository = dataSource.getRepository(Quote)
 

@@ -12,10 +12,12 @@ enum COMMANDS {
 
   BOT = 'bot',
   ROLL = 'roll',
+  LIST = 'list',
 
   GAME = 'game',
   SETGAME = 'setgame',
 
+  SO = 'so',
   SHOUTOUT = 'shoutout',
   UPTIME = 'uptime',
 

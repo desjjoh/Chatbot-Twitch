@@ -1,15 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
-import { Quote } from '../app/database/models/quote.ts'
-
-declare const process: {
-  env: {
-    DB_HOST: string
-    DB_PORT: number
-    DB_USER: string
-    DB_PASSWORD: string
-    DB_DATABASE: string
-  }
-}
+import { Quote } from '../database/models/quote.ts'
 
 const TypeOrmModuleConfig: DataSourceOptions = {
   type: 'sqlite',

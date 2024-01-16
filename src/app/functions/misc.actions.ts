@@ -1,5 +1,5 @@
 import { ChatUserstate } from 'tmi.js'
-import { useNumberUtil } from '../../utils/number.util.ts'
+import { useNumberUtil } from '../../lib/utils/number.util.ts'
 
 const NUMBER = useNumberUtil()
 

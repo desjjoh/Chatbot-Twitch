@@ -4,7 +4,7 @@ import { ChatbotPayloadType, ISendChat } from '../../lib/types/chat.types.ts'
 
 import { useChatbotResolver } from '../resolvers/chatbot.resolver.ts'
 
-import client from '../../plugins/tmi.plugin.ts'
+import client from '../plugins/tmi.plugin.ts'
 
 const CONFIG: Bull.QueueOptions = { limiter: { max: 1, duration: 3000 } }
 const chatbot: Bull.Queue<ChatbotPayloadType> = new Bull<ChatbotPayloadType>('chatbot', CONFIG)
