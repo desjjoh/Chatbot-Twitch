@@ -13,6 +13,7 @@ enum COMMANDS {
   BOT = 'bot',
   ROLL = 'roll',
   LIST = 'list',
+  LURK = 'lurk',
 
   GAME = 'game',
   SETGAME = 'setgame',

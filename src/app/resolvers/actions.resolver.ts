@@ -4,9 +4,9 @@ import { ACTION_CMD } from '../../lib/types/chat.types.ts'
 import { COMMANDS } from '../../lib/enums/chat.enums.ts'
 import { regExpCommand } from '../../lib/constants/regex.constants.ts'
 
-import * as QUOTES from '../functions/quote.actions.ts'
-import * as CHANNEL from '../functions/channel.actions.ts'
-import * as MISC from '../functions/misc.actions.ts'
+import QuoteActions from '../services/quote.service.ts'
+import ChannelActions from '../services/channel.service.ts'
+import MiscActions from '../services/misc.service.ts'
 
 async function hasPermission(userstate: ChatUserstate): Promise<void> {
   const authorized = userstate.badges?.broadcaster || userstate.mod
@@ -19,44 +19,49 @@ async function useActionCommandResolver({ channel, userstate, message }: ACTION_
 
   const [_raw, command, argument] = regExpMatchArray
 
-  switch (command) {
+  switch (command.toLowerCase()) {
     case COMMANDS.GAME:
-      return CHANNEL.onGame({ channel })
-    case COMMANDS.SO:
-    case COMMANDS.SHOUTOUT:
-      await hasPermission(userstate)
-      return CHANNEL.onShoutout({ channel, argument })
+      return ChannelActions.onGame({ channel })
     case COMMANDS.TAGS:
-      return CHANNEL.onTags({ channel })
+      return ChannelActions.onTags({ channel })
     case COMMANDS.TITLE:
-      return CHANNEL.onTitle({ channel })
+      return ChannelActions.onTitle({ channel })
     case COMMANDS.UPTIME:
-      return CHANNEL.onUptime({ channel })
+      return ChannelActions.onUptime({ channel })
 
     case COMMANDS.SETGAME:
       await hasPermission(userstate)
-      return CHANNEL.onSetGame({ channel, argument })
+      return ChannelActions.onSetGame({ channel, argument })
     case COMMANDS.SETTITLE:
       await hasPermission(userstate)
-      return CHANNEL.onSetTitle({ channel, argument })
+      return ChannelActions.onSetTitle({ channel, argument })
+
+    case COMMANDS.SO:
+    case COMMANDS.SHOUTOUT:
+      await hasPermission(userstate)
+      return ChannelActions.onShoutout({ channel, argument })
 
     case COMMANDS.BOT:
-      return MISC.onBot()
-    case COMMANDS.ROLL:
-      return MISC.onRoll({ userstate })
+      return MiscActions.onBot()
     case COMMANDS.LIST:
-      return MISC.onList()
+      return MiscActions.onList()
+
+    case COMMANDS.ROLL:
+      return MiscActions.onRoll({ userstate })
+    case COMMANDS.LURK:
+      return MiscActions.onLurk({ userstate })
 
     case COMMANDS.ADDQUOTE:
-      return QUOTES.onAddQuote({ channel, argument })
+      return QuoteActions.onAddQuote({ channel, argument })
     case COMMANDS.QUOTE:
-      return QUOTES.onQuote({ argument })
+      return QuoteActions.onQuote({ argument })
     case COMMANDS.EDITQUOTE:
       await hasPermission(userstate)
-      return QUOTES.onEditQuote({ argument })
+      return QuoteActions.onEditQuote({ argument })
     case COMMANDS.REMOVEQUOTE:
       await hasPermission(userstate)
-      return QUOTES.onDeleteQuote({ argument })
+      return QuoteActions.onDeleteQuote({ argument })
+
     default:
       throw new Error(`No command named ${command} has been initialized.`)
   }

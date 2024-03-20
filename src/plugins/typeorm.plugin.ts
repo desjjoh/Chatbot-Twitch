@@ -1,5 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
-import { Quote } from '../database/models/quote.ts'
+import { Quote } from '../apis/localhost/lib/models/quote.ts'
 
 const TypeOrmModuleConfig: DataSourceOptions = {
   type: 'sqlite',
