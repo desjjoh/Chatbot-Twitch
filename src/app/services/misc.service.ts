@@ -5,7 +5,7 @@ const NUMBER = useNumberUtil()
 
 class MiscActions {
   public static async onBot(): Promise<string> {
-    return `Hi, I'm k38bot! I was developed by user https://twitch.tv/k3nata8 as a multi-purpose interactive stream assistant. If you're curious and want more information 
+    return `Hi, I'm @k38bot! I was developed by user https://twitch.tv/k3nata8 as a multi-purpose interactive stream assistant. If you're curious and want more information 
     you can find my source code @ https://github.com/k3na7a/TwitchBot.`
   }
 

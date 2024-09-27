@@ -22,17 +22,17 @@ class EventListeners {
     logger.add({ action: LoggerActions.INFO, message })
   }
 
-  public static onJoin(channel: string, username: string, self: boolean): void {
+  public static onJoin(channel: string, _username: string, self: boolean): void {
     if (!self) return
 
     const message = `Joined ${channel}`
     logger.add({ action: LoggerActions.INFO, message })
 
-    chatbot.add({
-      action: ChatbotActions.SEND_MSG,
-      channel,
-      message: `Hi I'm ${username}! How may I help you today?`
-    })
+    // chatbot.add({
+    //   action: ChatbotActions.SEND_MSG,
+    //   channel,
+    //   message: `Hi I'm ${username}! How may I help you today?`
+    // })
   }
 
   public static onDisconnected(reason: string): void {

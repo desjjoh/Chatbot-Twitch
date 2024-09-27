@@ -1,3 +1,4 @@
+import { useNumberUtil } from '../../../lib/utils/number.util.ts'
 import dataSource from '../../../plugins/typeorm.plugin.ts'
 import { Quote } from '../lib/models/quote.ts'
 import { CreateQuote, EditQuote } from '../lib/types/quote.ts'
@@ -14,8 +15,10 @@ class QuoteService {
   }
 
   public static async getRandomQuote(): Promise<Quote> {
+    const numberUtil = useNumberUtil()
+
     const count = await quoteRepository.count()
-    const num = Math.floor(Math.random() * count)
+    const num = numberUtil.generateRandomNum(0, count)
 
     const quote = await quoteRepository.find({ order: { $createdAt: 'ASC' }, skip: num, take: 1 })
     if (!quote.length) throw new Error('No Quotes found.')

@@ -40,6 +40,9 @@ async function useActionCommandResolver({ channel, userstate, message }: ACTION_
     case COMMANDS.SHOUTOUT:
       await hasPermission(userstate)
       return ChannelActions.onShoutout({ channel, argument })
+    case COMMANDS.RAFFLE:
+      await hasPermission(userstate)
+      return ChannelActions.onSelectRandomChatter({ channel })
 
     case COMMANDS.BOT:
       return MiscActions.onBot()

@@ -2,6 +2,7 @@ import apiClient from '../../plugins/twurple.plugin.ts'
 
 import { useDateTimeUtil } from '../../lib/utils/date.util.ts'
 import { useStringUtil } from '../../lib/utils/string.util.ts'
+import { useNumberUtil } from '../../lib/utils/number.util.ts'
 
 const STRING = useStringUtil()
 const DATE = useDateTimeUtil()
@@ -76,6 +77,24 @@ class ChannelActions {
     return apiClient.channels
       .updateChannelInfo(user.id, { title: payload.argument.trim() })
       .then(() => `The stream title has been updated to: ${payload.argument.trim()}.`)
+  }
+
+  public static async onSelectRandomChatter({ channel }: { channel: string }): Promise<string> {
+    const broadcaster = await apiClient.users.getUserByName(STRING.dehash(channel))
+    if (!broadcaster) throw new Error(`Get user by name ${channel} has failed.`)
+
+    const { data: chatters, total } = await apiClient.chat.getChatters(broadcaster.id)
+    if (!total) throw new Error(`Get chatters for broadcaster ${channel} has produced no results.`)
+
+    const numberUtil = useNumberUtil()
+    const stringUtil = useStringUtil()
+    const num = numberUtil.generateRandomNum(1, total)
+    const randomChatter = chatters[num - 1]
+
+    return `@${randomChatter.userDisplayName} has been randomly selected out of ${total} ${stringUtil.pluralize({
+      value: total,
+      word: 'chatter'
+    })}.`
   }
 }
 

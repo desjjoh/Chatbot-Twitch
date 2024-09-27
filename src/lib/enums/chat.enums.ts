@@ -20,6 +20,7 @@ enum COMMANDS {
 
   SO = 'so',
   SHOUTOUT = 'shoutout',
+  RAFFLE = 'raffle',
   UPTIME = 'uptime',
 
   TAGS = 'tags',
