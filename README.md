@@ -68,7 +68,7 @@ Create a `.env` file in the project root:
 ```env
 IRC_SERVER=irc.chat.twitch.tv
 IRC_PORT=443
-IRC_NICK=k38bot
+IRC_NICK=chatbot
 IRC_TOKEN=oauth:your_twitch_oauth_token
 IRC_CHANNEL=#yourchannel
 ```
@@ -127,8 +127,8 @@ You should see:
 
 ```bash
 [INFO] Connecting to irc-ws.chat.twitch.tv on port 443..
-✅ connected to irc-ws.chat.twitch.tv:443 as k38bot
-🎉 joined #yourchannel as k38bot
+✅ connected to irc-ws.chat.twitch.tv:443 as chatbot
+🎉 joined #yourchannel as chatbot
 ```
 
 ---
@@ -166,7 +166,7 @@ You should see:
 
 **John Desjardins**  
 Ottawa, Canada  
-[GitHub: k3na7a](https://github.com/k3na7a)
+[GitHub: desjjoh](https://github.com/desjjoh)
 
 ---
 
