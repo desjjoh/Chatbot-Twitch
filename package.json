@@ -1,34 +1,40 @@
 {
-  "name": "twitchbot",
-  "version": "2.0.0",
-  "description": "Chat bot for Twitch.tv",
-  "main": "src/main.ts",
-  "type": "module",
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "",
+  "author": "John Desjardins",
+  "license": "MIT",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "node --import=./register.js src/main.ts"
+    "dev": "ts-node src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "docker:build": "docker build -t twitchbot .",
+    "docker:run": "docker run --rm -it --env-file .env --name twitchbot twitchbot",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write ."
   },
-  "author": "John 'Kenata8' Desjardins",
-  "license": "ISC",
   "dependencies": {
-    "@twurple/api": "^7.0.6",
-    "@twurple/auth": "^7.0.6",
-    "axios": "^1.6.5",
-    "bull": "^4.12.0",
-    "dotenv": "^16.3.1",
-    "moment": "^2.29.4",
-    "mysql2": "^3.6.5",
-    "sqlite3": "^5.1.6",
+    "@twurple/chat": "^7.4.0",
+    "bullmq": "^5.61.0",
+    "dotenv": "^17.2.3",
+    "moment": "^2.30.1",
     "tmi.js": "^1.8.5",
     "ts-node": "^10.9.2",
-    "typeorm": "^0.3.17"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@tsconfig/node-lts": "^20.1.0",
-    "@types/node": "^20.10.5",
+    "@types/node": "^24.7.2",
     "@types/tmi.js": "^1.8.6",
-    "eslint": "^8.56.0",
-    "eslint-config-google": "^0.14.0",
-    "tsx": "^4.19.0",
-    "typescript": "^5.3.3"
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "tsconfig-paths": "^4.2.0"
   }
 }

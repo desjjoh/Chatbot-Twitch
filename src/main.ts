@@ -1,22 +1,16 @@
-import 'dotenv/config'
+import { TMI } from './events/tmi.events';
+import { client } from './config/tmi.config';
 
-import client from './plugins/tmi.plugin.ts'
-import dataSource from './plugins/typeorm.plugin.ts'
+function bootstrap() {
+  client.on('connecting', TMI.EventListeners.onConnecting);
+  client.on('logon', TMI.EventListeners.onLogon);
+  client.on('connected', TMI.EventListeners.onConnected);
+  client.on('join', TMI.EventListeners.onJoin);
+  client.on('disconnected', TMI.EventListeners.onDisconnected);
+  client.on('reconnect', TMI.EventListeners.onReconnect);
+  client.on('message', TMI.EventListeners.onMessage);
 
-import TMI from './app/services/tmi.service.ts'
+  client.connect().catch(console.error);
+}
 
-// Set TMI.js Event Listeners
-// Authentication Events
-client.on('connecting', TMI.EventListeners.onConnecting)
-client.on('logon', TMI.EventListeners.onLogon)
-client.on('connected', TMI.EventListeners.onConnected)
-client.on('join', TMI.EventListeners.onJoin)
-client.on('disconnected', TMI.EventListeners.onDisconnected)
-client.on('reconnect', TMI.EventListeners.onReconnect)
-
-// Channel Events
-client.on('message', TMI.EventListeners.onMessage)
-
-// Initialize Plugins
-await dataSource.initialize()
-await client.connect()
+bootstrap();
