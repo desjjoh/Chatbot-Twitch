@@ -1,6 +1,7 @@
-import type { ChatUserstate } from 'tmi.js';
+import type { ChatUserstate, Client } from 'tmi.js';
 
 import Log from '../queues/logger.queue';
+import { client } from '../config/tmi.config';
 
 class TMIEventListeners {
   public static async onConnecting(address: string, port: number): Promise<void> {
@@ -84,4 +85,16 @@ class TMIEventListeners {
 
 export class TMI {
   public static EventListeners = TMIEventListeners;
+
+  public static initiatePlugin(client: Client): void {
+    client.on('connecting', TMIEventListeners.onConnecting);
+    client.on('logon', TMIEventListeners.onLogon);
+    client.on('connected', TMIEventListeners.onConnected);
+    client.on('join', TMIEventListeners.onJoin);
+    client.on('disconnected', TMIEventListeners.onDisconnected);
+    client.on('reconnect', TMIEventListeners.onReconnect);
+    client.on('message', TMIEventListeners.onMessage);
+
+    client.connect().catch(console.error);
+  }
 }

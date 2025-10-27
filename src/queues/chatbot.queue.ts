@@ -6,7 +6,7 @@ import { PayloadType, defaultJobOptions, queueName } from '../config/chatbot.con
 
 console.log(redisConnection);
 
-const processJob = async (job: Job<PayloadType>) => {
+const processJob = async (job: Job<PayloadType>): Promise<void> => {
   try {
     const { channel, message } = job.data;
     await sendChat({ channel, message });

@@ -31,9 +31,9 @@ export async function processJob({ data }: Job<PayloadType>): Promise<void> {
     const block = formatBlock({ timestamp: Date.now(), message: data.message });
     const entry = `[${time}] ${data.level.toUpperCase()} [${data.context}]\n${block}\n`;
     const exists = await fileExists(filePath);
-    const start = `[${time}] LOG START -- ${now.format('L')}\n${entry}\n`;
+    const start = `[${time}] LOG START -- ${now.format('L')}\n${entry}`;
 
-    const formatted = exists ? `${entry}` : `${start}`;
+    const formatted = exists ? entry : start;
 
     await fs.appendFile(filePath, formatted, 'utf8');
   } catch (err: unknown) {
