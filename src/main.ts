@@ -24,7 +24,7 @@ bootstrap().catch((err) => {
   const context = 'Startup';
   const duration = (performance.now() - start).toFixed(2);
   log.error(
-    { context, reason: err.message ?? err },
+    { context, reason: err.message ?? err, duration },
     `[stop] startup sequence failed after ${duration}ms`,
   );
   process.exit(0);
