@@ -16,27 +16,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
-  mysql:
-    image: mysql:8.4
-    container_name: chatbot-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: chatbot
-    volumes:
-      - chatbot_mysql_data:/var/lib/mysql
-    ports:
-      - '3307:3307'
-    mem_limit: 256m
-    cpus: 0.5
-    storage_opt:
-      size: 2G
-    healthcheck:
-      test:
-        ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD || exit 1']
-      interval: 5s
-      timeout: 3s
-      retries: 20
   chatbot:
     build: .
     container_name: chatbot-server
@@ -58,5 +37,3 @@ services:
     cpus: 0.25
 volumes:
   redis_data:
-  chatbot_mysql_data:
-    name: chatbot_mysql_data
