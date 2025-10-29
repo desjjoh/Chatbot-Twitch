@@ -1,18 +1,13 @@
-import { JobsOptions } from 'bullmq';
+import pino from 'pino';
 
-type path = 'system' | 'debug';
-type level = 'info' | 'warn' | 'error';
-
-export type PayloadType = {
-  timestamp: number;
-  level: level;
-  message: string;
-  context?: string;
-};
-
-export const queueName = 'logger';
-export const defaultJobOptions: JobsOptions = {
-  removeOnComplete: true,
-  removeOnFail: false,
-  attempts: 1,
-};
+export const log = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+      translateTime: 'HH:MM:ss.l',
+      ignore: 'pid,hostname',
+    },
+  },
+});

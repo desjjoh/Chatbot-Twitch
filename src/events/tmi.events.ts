@@ -1,85 +1,61 @@
 import type { ChatUserstate, Client } from 'tmi.js';
 
-import Log from '../queues/logger.queue';
-import { client } from '../config/tmi.config';
+import { log } from '../config/logger.config';
 
 class TMIEventListeners {
-  public static async onConnecting(address: string, port: number): Promise<void> {
-    console.log(`[connecting] → ${address}:${port}`);
-
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: `[connecting] → ${address}:${port}`,
-      context: TMIEventListeners.name,
-    });
+  public static onConnecting(address: string, port: number): void {
+    log.info(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      `[connecting] 🛜 ${address}:${port}`,
+    );
   }
 
-  public static async onLogon(): Promise<void> {
-    console.log('[logon] sending authentication…');
-
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: '[logon] sending authentication…',
-      context: TMIEventListeners.name,
-    });
+  public static onLogon(): void {
+    log.info(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      '[logon] ➡️ sending authentication…',
+    );
   }
 
-  public static async onConnected(address: string, port: number): Promise<void> {
-    console.log(`[connected] ✅ ${address}:${port}`);
-
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: `[connected] ✅ ${address}:${port}`,
-      context: TMIEventListeners.name,
-    });
+  public static onConnected(address: string, port: number): void {
+    log.info(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      `[connected] ✅ ${address}:${port}`,
+    );
   }
 
-  public static async onJoin(channel: string, username: string, self: boolean): Promise<void> {
+  public static onJoin(channel: string, username: string, self: boolean): void {
     if (!self) return;
-    console.log(`[join] 🎉 joined ${channel} as ${username}`);
 
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: `[join] 🎉 joined ${channel} as ${username}`,
-      context: TMIEventListeners.name,
-    });
+    log.info(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      `[join] 🎉 joined ${channel} as ${username}`,
+    );
   }
 
-  public static async onDisconnected(reason: string): Promise<void> {
-    console.log(`[disconnected] ⚠️ reason: ${reason}`);
-
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: `[disconnected] ⚠️ reason: ${reason}`,
-      context: TMIEventListeners.name,
-    });
+  public static onDisconnected(reason: string): void {
+    log.warn(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      `[disconnected] ⚠️ reason: ${reason}`,
+    );
   }
 
-  public static async onReconnect(): Promise<void> {
-    console.log('[reconnect] attempting to reconnect…');
-
-    await Log({
-      timestamp: Date.now(),
-      level: 'info',
-      message: '[reconnect] attempting to reconnect…',
-      context: TMIEventListeners.name,
-    });
+  public static onReconnect(): void {
+    log.info(
+      { timestamp: Date.now(), context: TMIEventListeners.name },
+      '[reconnect] 🔃 attempting to reconnect…',
+    );
   }
 
-  public static async onMessage(
+  public static onMessage(
     channel: string,
     userstate: ChatUserstate,
     message: string,
     self: boolean,
-  ): Promise<void> {
+  ): void {
     if (!self) return;
 
-    console.log(`[${channel}] <${userstate['display-name']}>: ${message}`);
+    log.info(`[${channel}] <${userstate['display-name']}>: ${message}`);
   }
 }
 
