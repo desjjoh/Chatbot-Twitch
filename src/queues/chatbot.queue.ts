@@ -4,8 +4,6 @@ import { sendChat } from '@/config/tmi.config.js';
 import { redisConnection } from '@/config/redis.config.js';
 import { PayloadType, defaultJobOptions, queueName } from '@/config/chatbot.config.js';
 
-console.log(redisConnection);
-
 const processJob = async ({ data }: Job<PayloadType>): Promise<void> => {
   try {
     await sendChat(data);

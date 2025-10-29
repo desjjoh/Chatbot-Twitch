@@ -1,7 +1,7 @@
 import { TMI } from '@/events/tmi.events';
 import { client } from '@/config/tmi.config';
 import { System } from '@/events/system.events';
-import { log } from '@/config/logger.config';
+import { log } from '@/config/pino.config';
 
 const start = performance.now();
 

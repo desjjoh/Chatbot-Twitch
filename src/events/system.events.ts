@@ -1,4 +1,4 @@
-import { log } from '@/config/logger.config';
+import { log } from '@/config/pino.config';
 
 class SystemLifecycleEvents {
   public static registerGracefulShutdown(PROCESS: NodeJS.Process, start: number): void {
