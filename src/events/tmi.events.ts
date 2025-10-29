@@ -33,10 +33,8 @@ class TMIEventListeners {
     channel: string,
     userstate: ChatUserstate,
     message: string,
-    self: boolean,
+    _self: boolean,
   ): void {
-    if (!self) return;
-
     log.info(
       { context: TMIEventListeners.name },
       `[${channel}] <${userstate['display-name']}>: ${message}`,

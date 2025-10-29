@@ -9,7 +9,6 @@ export type ISendChat = {
 };
 
 const tmiOptions: Options = {
-  options: { debug: true },
   connection: { reconnect: true, secure: true },
   identity: {
     username: env.IRC_NICK,
