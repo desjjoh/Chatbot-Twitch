@@ -9,7 +9,7 @@ export const log = pino({
       translateTime: 'HH:MM:ss.l',
       singleLine: true,
       ignore: 'pid,hostname',
-      messageFormat: '{msg} {context}',
+      messageFormat: '{msg}',
     },
   },
 });
