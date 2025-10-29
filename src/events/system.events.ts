@@ -30,7 +30,9 @@ class SystemLifecycleEvents {
 
     PROCESS.on('unhandledRejection', (reason: any) => {
       if (reason?.name === 'ConnectionError') return;
+
       log.error({ context: SystemLifecycleEvents.name, reason }, '[unhandled] promise rejection');
+      PROCESS.exit(0);
     });
   }
 }

@@ -8,18 +8,24 @@ const start = performance.now();
 async function bootstrap(): Promise<void> {
   const context = 'Startup';
 
-  log.info({ context }, '[startup] startup sequence initiated...');
+  log.info({ context }, '[start] startup sequence initiated...');
 
   System.LifecycleEvents.registerGracefulShutdown(process, start);
   await TMI.LifecycleEvents.initiatePlugin(client);
 
   const duration = (performance.now() - start).toFixed(2);
-  log.info({ context, duration }, `[startup] completed successfully in ${duration}ms`);
+  log.info(
+    { context, duration },
+    `[ready] startup sequence completed successfully in ${duration}ms`,
+  );
 }
 
 bootstrap().catch((err) => {
   const context = 'Startup';
   const duration = (performance.now() - start).toFixed(2);
-  log.error({ context, reason: err.message ?? err }, `[startup] failed after ${duration}ms`);
-  process.exit();
+  log.error(
+    { context, reason: err.message ?? err },
+    `[stop] startup sequence failed after ${duration}ms`,
+  );
+  process.exit(0);
 });
