@@ -1,38 +1,54 @@
 import 'dotenv/config';
 
-type ENV = {
-  readonly DEBUG: boolean;
-  readonly IRC_SERVER: string;
-  readonly IRC_PORT: number;
-  readonly IRC_NICK: string;
-  readonly IRC_TOKEN: string;
-  readonly IRC_CHANNEL: string;
-  readonly MYSQL_HOST: string;
-  readonly MYSQL_USER: string;
-  readonly MYSQL_PASSWORD: string;
-  readonly MYSQL_DB: string;
-  readonly REDIS_HOST: string;
-  readonly REDIS_PORT: number;
-  readonly REDIS_DB: number;
-  readonly REDIS_PASSWORD: string | undefined;
-};
+import { z } from 'zod';
+import { log } from '@/config/pino.config';
 
-export const env: ENV = {
-  DEBUG: true,
+const envSchema = z.object({
+  DEBUG: z
+    .string()
+    .transform((v) => v === 'true' || v === '1')
+    .default(false),
 
-  IRC_SERVER: process.env.IRC_SERVER ?? 'irc.chat.twitch.tv',
-  IRC_PORT: Number(process.env.IRC_PORT) ?? 6667,
-  IRC_NICK: process.env.IRC_NICK ?? '',
-  IRC_TOKEN: process.env.IRC_TOKEN ?? '',
-  IRC_CHANNEL: process.env.IRC_CHANNEL ?? '',
+  IRC_SERVER: z.string().min(1, 'IRC_SERVER is required'),
+  IRC_PORT: z
+    .string()
+    .transform((v) => Number(v))
+    .refine((v) => !Number.isNaN(v) && v > 0, 'IRC_PORT must be a valid number')
+    .default(6667),
 
-  MYSQL_HOST: process.env.MYSQL_HOST ?? 'mysql',
-  MYSQL_USER: process.env.MYSQL_USER ?? 'root',
-  MYSQL_PASSWORD: process.env.MYSQL_PASSWORD ?? 'root',
-  MYSQL_DB: process.env.MYSQL_DB ?? 'twitchbot',
+  IRC_NICK: z.string().min(1, 'IRC_NICK is required'),
+  IRC_TOKEN: z.string().min(1, 'IRC_TOKEN is required'),
+  IRC_CHANNEL: z.string().min(1, 'IRC_CHANNEL is required'),
 
-  REDIS_HOST: process.env.REDIS_HOST ?? 'localhost',
-  REDIS_PORT: Number(process.env.REDIS_PORT) ?? 6379,
-  REDIS_DB: Number(process.env.REDIS_DB) ?? 0,
-  REDIS_PASSWORD: process.env.REDIS_PASSWORD ?? undefined,
-};
+  MYSQL_HOST: z.string().min(1, 'MYSQL_HOST is required').default('mysql'),
+  MYSQL_USER: z.string().min(1, 'MYSQL_USER is required').default('root'),
+  MYSQL_PASSWORD: z.string().min(1, 'MYSQL_PASSWORD is required').default('root'),
+  MYSQL_DB: z.string().min(1, 'MYSQL_DB is required').default('twitchbot'),
+
+  REDIS_HOST: z.string().min(1, 'REDIS_HOST is required').default('localhost'),
+  REDIS_PORT: z
+    .string()
+    .transform((v) => Number(v))
+    .refine((v) => !Number.isNaN(v) && v > 0, 'REDIS_PORT must be a valid number')
+    .default(6379),
+
+  REDIS_DB: z
+    .string()
+    .transform((v) => Number(v))
+    .refine((v) => !Number.isNaN(v) && v >= 0, 'REDIS_DB must be a valid number')
+    .default(0),
+
+  REDIS_PASSWORD: z.string().optional(),
+});
+
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  const context = 'Environment';
+  const tree = z.treeifyError(parsed.error);
+
+  log.error({ context, errors: tree }, '[env] validation failed');
+  process.exit(0);
+}
+
+export const env = parsed.data;
