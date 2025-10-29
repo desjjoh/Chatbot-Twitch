@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "node --watch --import tsx src/main.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/main.js",
     "docker:build": "docker build -t twitchbot .",
