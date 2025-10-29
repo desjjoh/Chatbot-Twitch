@@ -4,7 +4,7 @@ import { log } from '@/config/logger.config';
 
 class TMIEventListeners {
   public static onConnecting(address: string, port: number): void {
-    log.info({ context: TMIEventListeners.name }, `[connecting] ${address}:${port}`);
+    log.info({ context: TMIEventListeners.name, address, port }, `[connecting] ${address}:${port}`);
   }
 
   public static onLogon(): void {
@@ -12,17 +12,19 @@ class TMIEventListeners {
   }
 
   public static onConnected(address: string, port: number): void {
-    log.info({ context: TMIEventListeners.name }, `[connected] ${address}:${port}`);
+    log.info({ context: TMIEventListeners.name, address, port }, `[connected] ${address}:${port}`);
   }
 
   public static onJoin(channel: string, username: string, self: boolean): void {
     if (!self) return;
-
-    log.info({ context: TMIEventListeners.name }, `[join] joined ${channel} as ${username}`);
+    log.info(
+      { context: TMIEventListeners.name, channel, username, self },
+      `[join] joined ${channel} as ${username}`,
+    );
   }
 
   public static onDisconnected(reason: string): void {
-    log.warn({ context: TMIEventListeners.name }, `[disconnected] reason: ${reason}`);
+    log.warn({ context: TMIEventListeners.name, reason }, `[disconnected] reason: ${reason}`);
   }
 
   public static onReconnect(): void {
@@ -33,19 +35,17 @@ class TMIEventListeners {
     channel: string,
     userstate: ChatUserstate,
     message: string,
-    _self: boolean,
+    self: boolean,
   ): void {
     log.info(
-      { context: TMIEventListeners.name },
+      { context: TMIEventListeners.name, channel, userstate, message, self },
       `[${channel}] <${userstate['display-name']}>: ${message}`,
     );
   }
 }
 
-export class TMI {
-  public static EventListeners = TMIEventListeners;
-
-  public static initiatePlugin(client: Client): void {
+class TMILifecycleEvents {
+  public static async initiatePlugin(client: Client): Promise<void> {
     client.on('connecting', TMIEventListeners.onConnecting);
     client.on('logon', TMIEventListeners.onLogon);
     client.on('connected', TMIEventListeners.onConnected);
@@ -54,6 +54,11 @@ export class TMI {
     client.on('reconnect', TMIEventListeners.onReconnect);
     client.on('message', TMIEventListeners.onMessage);
 
-    client.connect().catch(console.error);
+    await client.connect();
   }
+}
+
+export class TMI {
+  public static EventListeners = TMIEventListeners;
+  public static LifecycleEvents = TMILifecycleEvents;
 }
