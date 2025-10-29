@@ -18,4 +18,4 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 ENV NODE_ENV=production
 
-CMD ["node", "dist/main.js"]
+CMD ["npm", "start"]

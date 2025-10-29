@@ -1,7 +1,7 @@
 services:
   redis:
     image: redis:7-alpine
-    container_name: chatbot-redis
+    container_name: chatbot-twitch-redis
     restart: unless-stopped
     ports:
       - '6380:6380'
@@ -18,7 +18,7 @@ services:
       retries: 20
   chatbot:
     build: .
-    container_name: chatbot-server
+    container_name: chatbot-twitch-server
     restart: unless-stopped
     env_file:
       - .env
@@ -27,8 +27,6 @@ services:
       - ./tsconfig.json:/app/tsconfig.json
       - ./logs:/app/logs
     depends_on:
-      mysql:
-        condition: service_healthy
       redis:
         condition: service_healthy
     environment:

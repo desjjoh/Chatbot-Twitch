@@ -1,15 +1,14 @@
 import { Queue, Worker, Job } from 'bullmq';
 
-import { sendChat } from '../config/tmi.config.js';
-import { redisConnection } from '../config/redis.config.js';
-import { PayloadType, defaultJobOptions, queueName } from '../config/chatbot.config.js';
+import { sendChat } from '@/config/tmi.config.js';
+import { redisConnection } from '@/config/redis.config.js';
+import { PayloadType, defaultJobOptions, queueName } from '@/config/chatbot.config.js';
 
 console.log(redisConnection);
 
-const processJob = async (job: Job<PayloadType>): Promise<void> => {
+const processJob = async ({ data }: Job<PayloadType>): Promise<void> => {
   try {
-    const { channel, message } = job.data;
-    await sendChat({ channel, message });
+    await sendChat(data);
   } catch (err: unknown) {
     if (err instanceof Error) throw err as Error;
   }

@@ -1,6 +1,6 @@
 import type { ChatUserstate, Client } from 'tmi.js';
 
-import { log } from '../config/logger.config';
+import { log } from '@/config/logger.config';
 
 class TMIEventListeners {
   public static onConnecting(address: string, port: number): void {
