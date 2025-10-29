@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 type ENV = {
   readonly DEBUG: boolean;
   readonly IRC_SERVER: string;

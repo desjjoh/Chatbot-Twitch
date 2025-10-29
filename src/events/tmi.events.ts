@@ -4,47 +4,29 @@ import { log } from '../config/logger.config';
 
 class TMIEventListeners {
   public static onConnecting(address: string, port: number): void {
-    log.info(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      `[connecting] 🛜 ${address}:${port}`,
-    );
+    log.info({ context: TMIEventListeners.name }, `[connecting] ${address}:${port}`);
   }
 
   public static onLogon(): void {
-    log.info(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      '[logon] ➡️ sending authentication…',
-    );
+    log.info({ context: TMIEventListeners.name }, '[logon] sending authentication...');
   }
 
   public static onConnected(address: string, port: number): void {
-    log.info(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      `[connected] ✅ ${address}:${port}`,
-    );
+    log.info({ context: TMIEventListeners.name }, `[connected] ${address}:${port}`);
   }
 
   public static onJoin(channel: string, username: string, self: boolean): void {
     if (!self) return;
 
-    log.info(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      `[join] 🎉 joined ${channel} as ${username}`,
-    );
+    log.info({ context: TMIEventListeners.name }, `[join] joined ${channel} as ${username}`);
   }
 
   public static onDisconnected(reason: string): void {
-    log.warn(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      `[disconnected] ⚠️ reason: ${reason}`,
-    );
+    log.warn({ context: TMIEventListeners.name }, `[disconnected] reason: ${reason}`);
   }
 
   public static onReconnect(): void {
-    log.info(
-      { timestamp: Date.now(), context: TMIEventListeners.name },
-      '[reconnect] 🔃 attempting to reconnect…',
-    );
+    log.info({ context: TMIEventListeners.name }, '[reconnect] attempting to reconnect…');
   }
 
   public static onMessage(
@@ -55,7 +37,10 @@ class TMIEventListeners {
   ): void {
     if (!self) return;
 
-    log.info(`[${channel}] <${userstate['display-name']}>: ${message}`);
+    log.info(
+      { context: TMIEventListeners.name },
+      `[${channel}] <${userstate['display-name']}>: ${message}`,
+    );
   }
 }
 
