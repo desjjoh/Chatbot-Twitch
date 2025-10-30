@@ -13,6 +13,8 @@ async function bootstrap(): Promise<void> {
   System.LifecycleEvents.registerGracefulShutdown(process, start);
   await TMI.LifecycleEvents.initiatePlugin(client);
 
+  System.Heartbeat.start(undefined, '0 * * * * *', start);
+
   const duration = (performance.now() - start).toFixed(2);
   log.info(
     { context, duration },
