@@ -44,38 +44,66 @@ class SystemHeartbeat {
 }
 
 class SystemLifecycleEvents {
-  public static registerGracefulShutdown(PROCESS: NodeJS.Process, start: number): void {
-    const logExit = (signal: string) => {
+  public static registerGracefulShutdown(
+    PROCESS: NodeJS.Process,
+    start: number,
+    services: Array<{ name: string; stop: () => Promise<void> | void }> = [],
+  ): void {
+    const context = SystemLifecycleEvents.name;
+
+    const shutdown = async (signal: string): Promise<void> => {
       const duration = (performance.now() - start).toFixed(2);
       log.info(
-        { context: SystemLifecycleEvents.name, signal, duration },
-        `[exit] ${signal} received after ${duration}ms — shutting down gracefully...`,
+        { context, signal, duration },
+        `[exit] ${signal} received — shutting down gracefully...`,
       );
+
+      try {
+        for (const service of services) {
+          const t0 = performance.now();
+          try {
+            await service.stop();
+            const took = (performance.now() - t0).toFixed(2);
+            log.info(
+              { context, service: service.name, took },
+              `[exit] ${service.name} stopped successfully (${took}ms)`,
+            );
+          } catch (err) {
+            log.error(
+              {
+                context,
+                service: service.name,
+                reason: err instanceof Error ? err.message : String(err),
+              },
+              `[exit] failed to stop ${service.name}`,
+            );
+          }
+        }
+
+        const total = (performance.now() - start).toFixed(2);
+        log.info({ context, total }, `[exit] shutdown complete in ${total}ms`);
+      } catch (err) {
+        log.error(
+          { context, reason: err instanceof Error ? err.message : String(err) },
+          '[exit] error during shutdown — forcing exit',
+        );
+      } finally {
+        PROCESS.exit(0);
+      }
     };
 
-    PROCESS.on('SIGINT', async () => {
-      logExit('SIGINT');
-      PROCESS.exit(0);
-    });
+    PROCESS.on('SIGINT', async () => void shutdown('SIGINT'));
+    PROCESS.on('SIGTERM', () => void shutdown('SIGTERM'));
+    PROCESS.on('unhandledRejection', (reason: any) => {
+      if (reason?.name === 'ConnectionError') return;
 
-    PROCESS.on('SIGTERM', () => {
-      logExit('SIGTERM');
-      PROCESS.exit(0);
+      log.error({ context, reason }, '[unhandled] promise rejection');
+      void shutdown('unhandledRejection');
     });
 
     PROCESS.on('exit', () => {
       const uptime = (performance.now() - start).toFixed(2);
-      log.info(
-        { context: SystemLifecycleEvents.name, uptime },
-        `[shutdown] process exited after ${uptime}ms`,
-      );
-    });
-
-    PROCESS.on('unhandledRejection', (reason: any) => {
-      if (reason?.name === 'ConnectionError') return;
-
-      log.error({ context: SystemLifecycleEvents.name, reason }, '[unhandled] promise rejection');
-      PROCESS.exit(0);
+      log.info({ context, uptime }, `[shutdown] process exited after ${uptime}ms`);
     });
   }
 }

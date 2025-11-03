@@ -10,10 +10,13 @@ async function bootstrap(): Promise<void> {
 
   log.info({ context }, '[start] startup sequence initiated...');
 
-  System.LifecycleEvents.registerGracefulShutdown(process, start);
+  System.LifecycleEvents.registerGracefulShutdown(process, start, [
+    { name: 'Heartbeat', stop: async () => System.Heartbeat.stop() },
+  ]);
+
   await TMI.LifecycleEvents.initiatePlugin(client);
 
-  System.Heartbeat.start(undefined, '0 * * * * *', start);
+  // System.Heartbeat.start(undefined, '0 * * * * *', start);
 
   const duration = (performance.now() - start).toFixed(2);
   log.info(
