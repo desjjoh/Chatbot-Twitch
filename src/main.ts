@@ -1,6 +1,6 @@
 /**
  * @fileoverview Application bootstrap for the Twitch Chatbot.
- * @module system/startup
+ * @module main
  * @description
  *  Initializes the core runtime, registers lifecycle handlers,
  *  and connects the TMI (Twitch Messaging Interface) client.
