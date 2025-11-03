@@ -9,6 +9,8 @@ class SystemHeartbeat {
     cronExpr = '* * * * *',
     start: number = performance.now(),
   ): void {
+    const context = SystemHeartbeat.name;
+
     if (this.task) return;
 
     this.task = cron.schedule(cronExpr, async () => {
@@ -16,14 +18,11 @@ class SystemHeartbeat {
 
       try {
         if (callback) await callback();
-        log.info(
-          { context: SystemHeartbeat.name, uptime },
-          `[heartbeat] tick - uptime=${uptime}ms`,
-        );
+        log.info({ context, uptime }, `[heartbeat] tick - uptime=${uptime}ms`);
       } catch (err: unknown) {
         log.error(
           {
-            context: SystemHeartbeat.name,
+            context,
             reason: err instanceof Error ? err.message : String(err),
             uptime,
           },
@@ -34,12 +33,14 @@ class SystemHeartbeat {
   }
 
   public static stop() {
+    const context = SystemHeartbeat.name;
+
     if (!this.task) return;
 
     this.task.stop();
     this.task = null;
 
-    log.info({ context: 'HeartbeatCron' }, '[heartbeat] stopped');
+    log.info({ context }, '[heartbeat] stopped');
   }
 }
 
@@ -53,6 +54,7 @@ class SystemLifecycleEvents {
 
     const shutdown = async (signal: string): Promise<void> => {
       const duration = (performance.now() - start).toFixed(2);
+
       log.info(
         { context, signal, duration },
         `[exit] ${signal} received — shutting down gracefully...`,
