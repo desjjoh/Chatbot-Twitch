@@ -1,6 +1,6 @@
 /**
  * @fileoverview Shared abstract base entity for all database models.
- * @module db/base-entity
+ * @module entities/base
  * @description
  *  Provides common primary key and timestamp columns for all entities.
  *  Extends TypeORM's `BaseEntity` to allow use of static helper methods

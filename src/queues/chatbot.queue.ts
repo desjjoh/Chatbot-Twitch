@@ -1,6 +1,6 @@
 /**
  * @fileoverview Chatbot job queue and worker using BullMQ.
- * @module chatbot/queue
+ * @module queues/chatbot
  * @description
  *  Manages asynchronous chat message processing for the Twitch chatbot.
  *  Provides lifecycle-safe initialization, contextual logging, and

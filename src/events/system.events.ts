@@ -1,6 +1,6 @@
 /**
  * @fileoverview System-level heartbeat and lifecycle management.
- * @module system/events
+ * @module events/system
  * @description
  *  Provides core utilities for process lifecycle control, including
  *  scheduled heartbeat logging, graceful shutdown coordination, and
